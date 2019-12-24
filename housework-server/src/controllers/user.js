@@ -10,7 +10,14 @@ module.exports = {
       return res.status(400).json(userAuthErrorObject(error.details[0].message));
     }
     const hashedPassword = bcrypt.hashSync(req.body.password);
-
+    User.findOne({ name: req.body.name }, (error, user) => {
+      if (error) {
+        return res.status(500).json(userAuthErrorObject('unknown error'));
+      }
+      if (!user) {
+        return res.status(409).json(userAuthErrorObject('user already exists'));
+      }
+    });
     User.create({
       name: req.body.name,
       password: hashedPassword
