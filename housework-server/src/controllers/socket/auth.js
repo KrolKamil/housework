@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import { User } from '../../models/user.js';
+const jwt = require('jsonwebtoken');
+const { User } = require('../../models/user.js');
 
 const authErrorMessage = (message) => {
   return JSON.stringify({
@@ -9,6 +9,7 @@ const authErrorMessage = (message) => {
 };
 
 const auth = async (payload) => {
+  console.log(payload);
   if (payload.hasOwnProperty('token')) {
     try {
       const decoded = jwt.verify(payload.token, process.env.PRIVATE_KEY);

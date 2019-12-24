@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const { auth } = require('./controllers/socket/auth');
 
 const socket = (server) => {
   const wss = new WebSocket.Server({ server });
@@ -9,12 +10,13 @@ const socket = (server) => {
   // };
 
   wss.on('connection', (ws) => {
-    ws.addEventListener('message', (message) => {
+    ws.addEventListener('message', async (message) => {
       try {
-        const parsedMessage = JSON.parse(message);
-        const response = handleMessage(parsedMessage);
+        const parsedMessage = await JSON.parse(message.data);
+        const response = await handleMessage(parsedMessage);
         ws.send(response);
       } catch (error) {
+        console.log(error);
         const errorMessage = {
           type: 'error',
           payload: {
@@ -27,10 +29,16 @@ const socket = (server) => {
     });
   });
 
-  const handleMessage = (message) => {
-    switch (message.type) {
-      case 'auth':
+  const handleMessage = async (message) => {
+    if (message.hasOwnProperty('type') && message.hasOwnProperty('payload')) {
+      switch (message.type) {
+        case 'auth':
+          return auth(message.payload);
+        default:
+          return JSON.stringify({ type: 'error' });
+      }
     }
+    return JSON.stringify({ type: 'error', payload: { message: 'object property: type or payload not found' } });
   };
 
   // const terminateInterval = setInterval(() => {
