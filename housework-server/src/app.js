@@ -12,6 +12,10 @@ const server = () => {
   });
   const app = express();
   app.use(bodyParser.json());
+  app.use((req, res, next) => {
+    console.log(req.body);
+    next();
+  });
   app.use((error, req, res, next) => {
     res.status(400).json({
       type: 'error',

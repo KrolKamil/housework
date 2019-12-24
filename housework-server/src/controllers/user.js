@@ -10,20 +10,16 @@ module.exports = {
       return res.status(400).json(userAuthErrorObject(error.details[0].message));
     }
     const hashedPassword = bcrypt.hashSync(req.body.password);
-    User.findOne({ name: req.body.name }, (error, user) => {
-      if (error) {
-        return res.status(500).json(userAuthErrorObject('unknown error'));
-      }
-      if (!user) {
-        return res.status(409).json(userAuthErrorObject('user already exists'));
-      }
-    });
+    const queryResponse = await User.findOne({ name: req.body.name });
+    if (queryResponse) {
+      return res.status(400).json(userAuthErrorObject('user exists'));
+    }
     User.create({
       name: req.body.name,
       password: hashedPassword
     }, (error, user) => {
       if (error) {
-        return res.status(400).json(userAuthErrorObject(error));
+        return res.status(400).json(userAuthErrorObject('database error'));
       }
       const token = jwt.sign({ id: user._id }, process.env.PRIVATE_KEY, {
         expiresIn: 86400
