@@ -14,13 +14,12 @@ const User = mongoose.model('User', new mongoose.Schema({
   }
 }));
 
-// const validateUser = (user) => {
-//   const schema = {
-//     name: joi.string().min(5).max(50).required(),
-//     password: joi.string().min(5).max(255).required()
-//   };
-//   return joi;
-// };
+const userAuthErrorObject = (message) => {
+  return {
+    auth: false,
+    message: message || 'unknown'
+  };
+};
 
 const validateUser = (user) => {
   const schema = Joi.object({
@@ -33,3 +32,4 @@ const validateUser = (user) => {
 
 exports.User = User;
 exports.validateUser = validateUser;
+exports.userAuthErrorObject = userAuthErrorObject;

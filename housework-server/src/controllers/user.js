@@ -1,14 +1,13 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { User, validateUser } = require('../models/user');
+const { User, validateUser, userAuthErrorObject } = require('../models/user');
 
 module.exports = {
   register: async (req, res) => {
-    console.log(req.body);
     try {
       await validateUser(req.body);
     } catch (error) {
-      return res.status(400).send(error.details[0].message);
+      return res.status(400).json(userAuthErrorObject(error.details[0].message));
     }
     const hashedPassword = bcrypt.hashSync(req.body.password);
 
@@ -17,7 +16,7 @@ module.exports = {
       password: hashedPassword
     }, (error, user) => {
       if (error) {
-        return res.status(400).send(error);
+        return res.status(400).json(userAuthErrorObject(error));
       }
       const token = jwt.sign({ id: user._id }, process.env.PRIVATE_KEY, {
         expiresIn: 86400
@@ -28,14 +27,14 @@ module.exports = {
   login: async (req, res) => {
     User.findOne({ name: req.body.name }, (error, user) => {
       if (error) {
-        return res.status(500).send('eror');
+        return res.status(500).json(userAuthErrorObject('unknown error'));
       }
       if (!user) {
-        return res.status(404).send('No user found.');
+        return res.status(404).json(userAuthErrorObject('user not found'));
       }
       const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
       if (!isPasswordValid) {
-        return res.status(401).send({ auth: false, token: null });
+        return res.status(401).json(userAuthErrorObject('wrong password'));
       }
 
       const token = jwt.sign({ id: user._id }, process.env.PRIVATE_KEY, {

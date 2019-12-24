@@ -13,7 +13,6 @@ const server = () => {
   const app = express();
   app.use(bodyParser.json());
   app.use((error, req, res, next) => {
-    console.error(error.type);
     res.status(400).json({
       type: 'error',
       message: error.type || 'unknown error'
