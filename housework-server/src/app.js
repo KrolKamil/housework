@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const http = require('http');
+const bodyParser = require('body-parser');
 const WebSocket = require('ws');
 const user = require('./controllers/user');
 
@@ -10,6 +11,14 @@ const server = () => {
     useUnifiedTopology: true
   });
   const app = express();
+  app.use(bodyParser.json());
+  app.use((error, req, res, next) => {
+    console.error(error.type);
+    res.status(400).json({
+      type: 'error',
+      message: error.type || 'unknown error'
+    });
+  });
   const server = http.createServer(app);
   const wss = new WebSocket.Server({ server });
 

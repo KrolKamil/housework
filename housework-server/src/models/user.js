@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const joi = require('@hapi/joi');
+const Joi = require('@hapi/joi');
 
 const User = mongoose.model('User', new mongoose.Schema({
   name: {
@@ -14,12 +14,21 @@ const User = mongoose.model('User', new mongoose.Schema({
   }
 }));
 
+// const validateUser = (user) => {
+//   const schema = {
+//     name: joi.string().min(5).max(50).required(),
+//     password: joi.string().min(5).max(255).required()
+//   };
+//   return joi;
+// };
+
 const validateUser = (user) => {
-  const schema = {
-    name: joi.string().min(5).max(50).required(),
-    password: joi.string().min(5).max(255).required()
-  };
-  return joi.validate(user, schema);
+  const schema = Joi.object({
+    name: Joi.string().min(5).max(50).required(),
+    password: Joi.string().min(5).max(255).required()
+  });
+
+  return schema.validateAsync(user);
 };
 
 exports.User = User;
