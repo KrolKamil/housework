@@ -14,12 +14,13 @@
 <body>
     
     <script>
-    const socket = new WebSocket('ws://localhost:8080');
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDIzZmEwYWE2MTk3MmY3ODJhYjQ5NSIsImlhdCI6MTU3NzIyNDg4MSwiZXhwIjoxNTc3MzExMjgxfQ.2SpU2ehGm9GrXgixJv5iRQqhSvmCLjtEpPCZA7o6vuU';
+    const socket = new WebSocket('ws://localhost:3000');
     socket.addEventListener('open', () => {
         socket.addEventListener('message', (message) => {
             console.log(message.data);
         });
-        socket.send('Hi From Client');
+        socket.send('message from fornt');
     })
     </script>
 </body>
