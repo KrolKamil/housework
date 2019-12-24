@@ -35,7 +35,7 @@ const socket = (server) => {
         case 'auth':
           return auth(message.payload);
         default:
-          return JSON.stringify({ type: 'error' });
+          return JSON.stringify({ type: 'type: unknown' });
       }
     }
     return JSON.stringify({ type: 'error', payload: { message: 'object property: type or payload not found' } });
