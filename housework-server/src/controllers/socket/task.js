@@ -12,7 +12,7 @@ module.exports = {
       return terminateResponse;
     }
     try {
-      const allTask = await Task.find();
+      const allTask = await Task.find().populate('user', ['_id', 'name']);
       return {
         response: JSON.stringify({
           type: 'task_all',
@@ -56,9 +56,7 @@ module.exports = {
     }
   },
   move: async (payload) => {
-    console.log(payload);
     const authResponse = await authByPayload(payload);
-    console.log(authResponse);
     if (authResponse.auth === false) {
       return terminateResponse;
     }
@@ -66,40 +64,39 @@ module.exports = {
       return terminateResponse;
     }
     try {
-      console.log('before find');
-      const selectedTask = await Task.findById(payload.id).populate('user', ['_id', 'name']);
-      console.log('SUPER TEST');
-      console.log(selectedTask);
-      console.log('TEST END');
-      console.log('start');
-      console.log(selectedTask._id);
-      console.log(payload.id);
-      console.log(payload.id === selectedTask._id);
-      console.log('end');
+      const selectedTask = await Task.findById(payload.id);
       if ((selectedTask._id.equals(payload.id)) || (selectedTask.position === 'TODO')) {
-        console.log('setting position');
         selectedTask.position = payload.position;
         if (payload.position !== 'TODO') {
-          console.log('adding user id to task');
           selectedTask.user = authResponse.message;
         } else {
           selectedTask.user = '';
         }
         try {
           await selectedTask.save();
-          return {
-            response: JSON.stringify({
-              type: 'task_move',
-              payload: {
-                id: selectedTask._id
-              }
-            })
-          };
+          try {
+            const updatedTask = await Task.findById(payload.id).populate('user', ['_id', 'name']);
+            return {
+              response: JSON.stringify({
+                type: 'task_move',
+                payload: {
+                  task: updatedTask
+                }
+              }),
+              broadcast: JSON.stringify({
+                type: 'task_move',
+                payload: {
+                  task: updatedTask
+                }
+              })
+            };
+          } catch (e) {
+            return terminateResponse;
+          }
         } catch (e) {
           return terminateResponse;
         }
       } else {
-        console.log('terminating');
         return terminateResponse;
       }
     } catch (e) {
