@@ -67,8 +67,10 @@ module.exports = {
     }
     try {
       console.log('before find');
-      const selectedTask = await Task.findById(payload.id);
+      const selectedTask = await Task.findById(payload.id).populate('user');
+      console.log('SUPER TEST');
       console.log(selectedTask);
+      console.log('TEST END');
       console.log('start');
       console.log(selectedTask._id);
       console.log(payload.id);
@@ -77,8 +79,13 @@ module.exports = {
       if ((selectedTask._id.equals(payload.id)) || (selectedTask.position === 'TODO')) {
         console.log('setting position');
         selectedTask.position = payload.position;
+        if (payload.position !== 'TODO') {
+          console.log('adding user id to task');
+          selectedTask.user = authResponse.message;
+        } else {
+          selectedTask.user = '';
+        }
         try {
-          console.log('before save');
           await selectedTask.save();
           return {
             response: JSON.stringify({
