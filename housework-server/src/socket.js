@@ -54,6 +54,8 @@ const socket = (server) => {
           return task.move(message.payload);
         case 'task_delete':
           return task.delete(message.payload);
+        case 'task_edit':
+          return task.edit(message.payload);
         default:
           return JSON.stringify({ type: 'type: unknown' });
       }

@@ -37,6 +37,14 @@ const validateTask = (task) => {
   return schema.validateAsync(task);
 };
 
+const validateTaskEdit = (task) => {
+  const schema = Joi.object({
+    title: Joi.string().min(1).max(30),
+    description: Joi.string().min(1).max(200)
+  });
+  return schema.validateAsync(task);
+};
+
 const validTaskPosition = (position) => {
   const positions = ['TODO', 'INPROGRESS', 'DONE'];
   if (positions.includes(position)) {
@@ -48,3 +56,4 @@ const validTaskPosition = (position) => {
 exports.Task = Task;
 exports.validateTask = validateTask;
 exports.validTaskPosition = validTaskPosition;
+exports.validateTaskEdit = validateTaskEdit;

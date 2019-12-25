@@ -1,5 +1,5 @@
 const { authByPayload } = require('../../utils');
-const { Task, validateTask, validTaskPosition } = require('../../models/task');
+const { Task, validateTask, validTaskPosition, validateTaskEdit } = require('../../models/task');
 
 const terminateResponse = {
   terminate: true
@@ -122,6 +122,44 @@ module.exports = {
       }
       return terminateResponse;
     } catch (e) {
+      return terminateResponse;
+    }
+  },
+  edit: async (payload) => {
+    const authResponse = await authByPayload(payload);
+    if (authResponse.auth === false) {
+      return terminateResponse;
+    }
+    try {
+      const dataToValidate = {
+        title: payload.title,
+        description: payload.description
+      };
+      await validateTaskEdit(dataToValidate);
+      try {
+        const selectedTask = await Task.findById(payload.id);
+        console.log(selectedTask);
+        selectedTask.title = payload.title || selectedTask.title;
+        selectedTask.description = payload.description || selectedTask.description;
+        await selectedTask.save();
+        return {
+          response: JSON.stringify({
+            type: 'task_delete',
+            task: selectedTask
+          }),
+          broadcast: JSON.stringify({
+            type: 'task_delete',
+            task: selectedTask
+          })
+        };
+      } catch (e) {
+        // console.log(e);
+        console.log('middle');
+        return terminateResponse;
+      }
+    } catch (e) {
+      // console.log(e);
+      console.log('top');
       return terminateResponse;
     }
   }
