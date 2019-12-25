@@ -17,6 +17,7 @@ const authByPayload = async (payload) => {
         if (userExists) {
           return authResponse(false, 'user do not exists - reset your hash');
         } else {
+          delete payload.token;
           return authResponse(true, decoded.id);
         }
       } catch (e) {

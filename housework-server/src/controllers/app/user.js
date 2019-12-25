@@ -10,9 +10,13 @@ module.exports = {
       return res.status(400).json(userAuthErrorObject(error.details[0].message));
     }
     const hashedPassword = bcrypt.hashSync(req.body.password);
-    const queryResponse = await User.findOne({ name: req.body.name });
-    if (queryResponse) {
-      return res.status(400).json(userAuthErrorObject('user exists'));
+    try {
+      const queryResponse = await User.findOne({ name: req.body.name });
+      if (queryResponse) {
+        return res.status(400).json(userAuthErrorObject('user exists'));
+      }
+    } catch (e) {
+      return res.status(500).json(userAuthErrorObject('internal databse error'));
     }
     User.create({
       name: req.body.name,

@@ -10,9 +10,7 @@ module.exports = {
 
   },
   add: async (payload) => {
-    console.log(payload);
     const authResponse = await authByPayload(payload);
-    console.log(authResponse);
     if (authResponse.auth === false) {
       return terminateResponse;
     }
@@ -21,11 +19,20 @@ module.exports = {
     } catch (e) {
       return terminateResponse;
     }
-    const myRes = await Task.create({
-      title: payload.title,
-      description: payload.description || '',
-      position: 'TODO'
-    });
-    console.log(myRes);
+    try {
+      const myRes = await Task.create({
+        title: payload.title,
+        description: payload.description || '',
+        position: 'TODO'
+      });
+      return { response: JSON.stringify({
+        type: 'task_add',
+        payload: {
+
+        }
+      }) };
+    } catch (e) {
+      return terminateResponse;
+    }
   }
 };
