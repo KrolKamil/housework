@@ -14,9 +14,17 @@ const socket = (server) => {
       try {
         const parsedMessage = await JSON.parse(message.data);
         const response = await handleMessage(parsedMessage);
-        ws.send(response);
+        if (response.response) {
+          ws.send(response.response);
+        }
+        if (response.broadcast) {
+          wss.clients.forEach((client) => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+              client.send(response.broadcast);
+            }
+          });
+        }
       } catch (error) {
-        console.log(error);
         const errorMessage = {
           type: 'error',
           payload: {
@@ -39,6 +47,12 @@ const socket = (server) => {
       }
     }
     return JSON.stringify({ type: 'error', payload: { message: 'object property: type or payload not found' } });
+  };
+
+  const broadcast = (message) => {
+    wss.clients.forEach((ws) => {
+
+    });
   };
 
   // const terminateInterval = setInterval(() => {

@@ -40,9 +40,7 @@ module.exports = {
         return res.status(401).json(userAuthErrorObject('wrong password'));
       }
 
-      const token = jwt.sign({ id: user._id }, process.env.PRIVATE_KEY, {
-        expiresIn: 86400
-      });
+      const token = jwt.sign({ id: user._id }, process.env.PRIVATE_KEY);
       res.status(200).json({ auth: true, token: token });
     });
   }
