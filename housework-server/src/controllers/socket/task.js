@@ -67,7 +67,7 @@ module.exports = {
     }
     try {
       console.log('before find');
-      const selectedTask = await Task.findById(payload.id).populate('user');
+      const selectedTask = await Task.findById(payload.id).populate('user', ['_id', 'name']);
       console.log('SUPER TEST');
       console.log(selectedTask);
       console.log('TEST END');
