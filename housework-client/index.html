@@ -35,19 +35,27 @@
         payload:{
             token: token,
             id: '5e039dc1855fb024ecf3553b',
-            position: 'INPROGRESS'
+            position: 'TODO'
         }
     })
+    const deleteTask = JSON.stringify({
+        type: 'task_delete',
+        payload: {
+            token: token,
+            id: '5e03883fafc17106d8723295',
+        }
+    });
     console.log(messageToSend);
     const socket = new WebSocket('ws://localhost:3000');
     socket.addEventListener('open', () => {
         socket.addEventListener('message', (message) => {
             console.log(message.data);
         });
-        socket.send(messageToSend);
-        socket.send(createTask);
-        socket.send(allTasks);
-        socket.send(moveTask);
+        // socket.send(messageToSend);
+        // socket.send(createTask);
+        // socket.send(allTasks);
+        // socket.send(moveTask);
+        socket.send(deleteTask);
     });
     socket.addEventListener('close', () => {
         console.log('closed');

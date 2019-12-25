@@ -70,7 +70,7 @@ module.exports = {
         if (payload.position !== 'TODO') {
           selectedTask.user = authResponse.message;
         } else {
-          selectedTask.user = '';
+          delete selectedTask.user;
         }
         try {
           await selectedTask.save();
@@ -99,6 +99,28 @@ module.exports = {
       } else {
         return terminateResponse;
       }
+    } catch (e) {
+      return terminateResponse;
+    }
+  },
+  delete: async (payload) => {
+    const authResponse = await authByPayload(payload);
+    if (authResponse.auth === false) {
+      return terminateResponse;
+    }
+    try {
+      const deletedTask = await Task.deleteOne({ _id: payload.id });
+      if (deletedTask.deletedCount !== 0) {
+        return {
+          response: JSON.stringify({
+            type: 'task_delete',
+            payload: {
+              id: payload.id
+            }
+          })
+        };
+      }
+      return terminateResponse;
     } catch (e) {
       return terminateResponse;
     }
