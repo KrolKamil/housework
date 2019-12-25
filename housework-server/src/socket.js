@@ -48,6 +48,8 @@ const socket = (server) => {
           return auth(message.payload);
         case 'task_add':
           return task.add(message.payload);
+        case 'task_all':
+          return task.all(message.payload);
         default:
           return JSON.stringify({ type: 'type: unknown' });
       }

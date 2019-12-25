@@ -24,6 +24,12 @@
              description: 'test',
              timestamp: new Date().getTime()
         }});
+    const allTasks = JSON.stringify({
+        type: 'task_all',
+        payload:{
+            token: token
+        }
+    })
     console.log(messageToSend);
     const socket = new WebSocket('ws://localhost:3000');
     socket.addEventListener('open', () => {
@@ -32,6 +38,7 @@
         });
         socket.send(messageToSend);
         socket.send(createTask);
+        socket.send(allTasks);
     });
     socket.addEventListener('close', () => {
         console.log('closed');

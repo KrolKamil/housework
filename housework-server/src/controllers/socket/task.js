@@ -6,8 +6,23 @@ const terminateResponse = {
 };
 
 module.exports = {
-  getAll: async (payload) => {
-
+  all: async (payload) => {
+    const authResponse = await authByPayload(payload);
+    if (authResponse.auth === false) {
+      return terminateResponse;
+    }
+    try {
+      const allTask = await Task.find();
+      console.log(allTask);
+      return {
+        response: JSON.stringify({
+          type: 'task_all',
+          payload: allTask
+        })
+      };
+    } catch (e) {
+      return terminateResponse;
+    }
   },
   add: async (payload) => {
     const authResponse = await authByPayload(payload);
