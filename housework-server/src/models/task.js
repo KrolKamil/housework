@@ -13,6 +13,10 @@ const Task = mongoose.model('Task', new mongoose.Schema({
     minlength: 1,
     maxlength: 200
   },
+  timestamp: {
+    type: Date,
+    required: true
+  },
   position: {
     type: String,
     enum: ['TODO', 'INPROGRESS', 'DONE'],
@@ -21,10 +25,6 @@ const Task = mongoose.model('Task', new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  },
-  timestamp: {
-    type: Date,
-    required: true
   }
 }));
 

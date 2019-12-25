@@ -4,7 +4,9 @@ const authErrorMessage = (message) => {
   return {
     response: JSON.stringify({
       type: 'auth_error',
-      message: message
+      payload: {
+        message: message
+      }
     })
   };
 };

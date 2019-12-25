@@ -42,14 +42,16 @@ module.exports = {
       });
       return {
         response: JSON.stringify({
-          type: 'task_add',
+          type: 'task_add-confirmation',
           payload: {
-            timestamp: savedTask.timestamp
+            task: savedTask
           }
         }),
         broadcast: JSON.stringify({
-          type: 'task_new',
-          payload: savedTask
+          type: 'task_add',
+          payload: {
+            task: savedTask
+          }
         }) };
     } catch (e) {
       return terminateResponse;
@@ -78,7 +80,7 @@ module.exports = {
             const updatedTask = await Task.findById(payload.id).populate('user', ['_id', 'name']);
             return {
               response: JSON.stringify({
-                type: 'task_move',
+                type: 'task_move-confirmation',
                 payload: {
                   task: updatedTask
                 }
@@ -109,13 +111,19 @@ module.exports = {
       return terminateResponse;
     }
     try {
-      const deletedTask = await Task.deleteOne({ _id: payload.id });
+      const deletedTask = await Task.findByIdAndDelete(payload.id);
       if (deletedTask.deletedCount !== 0) {
         return {
           response: JSON.stringify({
+            type: 'task_delete-confirmation',
+            payload: {
+              task: deletedTask
+            }
+          }),
+          broadcast: JSON.stringify({
             type: 'task_delete',
             payload: {
-              id: payload.id
+              task: deletedTask
             }
           })
         };
@@ -143,11 +151,11 @@ module.exports = {
         await selectedTask.save();
         return {
           response: JSON.stringify({
-            type: 'task_delete',
+            type: 'task_edit-confirmation',
             task: selectedTask
           }),
           broadcast: JSON.stringify({
-            type: 'task_delete',
+            type: 'task_edit',
             task: selectedTask
           })
         };
