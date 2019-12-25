@@ -26,12 +26,17 @@ module.exports = {
         position: 'TODO',
         timestamp: payload.timestamp
       });
-      return { response: JSON.stringify({
-        type: 'task_add',
-        payload: {
-          timestamp: savedTask.timestamp
-        }
-      }) };
+      return {
+        response: JSON.stringify({
+          type: 'task_add',
+          payload: {
+            timestamp: savedTask.timestamp
+          }
+        }),
+        broadcast: JSON.stringify({
+          type: 'task_new',
+          payload: savedTask
+        }) };
     } catch (e) {
       return terminateResponse;
     }
