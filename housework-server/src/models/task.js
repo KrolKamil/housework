@@ -20,13 +20,18 @@ const Task = mongoose.model('Task', new mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId, ref: 'User'
+  },
+  timestamp: {
+    type: Date,
+    required: true
   }
 }));
 
 const validateTask = (task) => {
   const schema = Joi.object({
     title: Joi.string().min(1).max(30).required(),
-    description: Joi.string().min(1).max(200)
+    description: Joi.string().min(1).max(200),
+    timestamp: Joi.date().timestamp().required()
   });
 
   return schema.validateAsync(task);

@@ -20,15 +20,16 @@ module.exports = {
       return terminateResponse;
     }
     try {
-      const myRes = await Task.create({
+      const savedTask = await Task.create({
         title: payload.title,
         description: payload.description || '',
-        position: 'TODO'
+        position: 'TODO',
+        timestamp: payload.timestamp
       });
       return { response: JSON.stringify({
         type: 'task_add',
         payload: {
-
+          timestamp: savedTask.timestamp
         }
       }) };
     } catch (e) {
