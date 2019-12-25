@@ -138,7 +138,6 @@ module.exports = {
       await validateTaskEdit(dataToValidate);
       try {
         const selectedTask = await Task.findById(payload.id);
-        console.log(selectedTask);
         selectedTask.title = payload.title || selectedTask.title;
         selectedTask.description = payload.description || selectedTask.description;
         await selectedTask.save();
@@ -153,13 +152,9 @@ module.exports = {
           })
         };
       } catch (e) {
-        // console.log(e);
-        console.log('middle');
         return terminateResponse;
       }
     } catch (e) {
-      // console.log(e);
-      console.log('top');
       return terminateResponse;
     }
   }
