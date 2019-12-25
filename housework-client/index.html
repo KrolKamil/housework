@@ -29,6 +29,14 @@
         payload:{
             token: token
         }
+    });
+    const moveTask = JSON.stringify({
+        type: 'task_move',
+        payload:{
+            token: token,
+            id: '5e039dc1855fb024ecf3553b',
+            position: 'INPROGRESS'
+        }
     })
     console.log(messageToSend);
     const socket = new WebSocket('ws://localhost:3000');
@@ -39,6 +47,7 @@
         socket.send(messageToSend);
         socket.send(createTask);
         socket.send(allTasks);
+        socket.send(moveTask);
     });
     socket.addEventListener('close', () => {
         console.log('closed');

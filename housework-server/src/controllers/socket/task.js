@@ -1,5 +1,5 @@
 const { authByPayload } = require('../../utils');
-const { Task, validateTask } = require('../../models/task');
+const { Task, validateTask, validTaskPosition } = require('../../models/task');
 
 const terminateResponse = {
   terminate: true
@@ -13,7 +13,6 @@ module.exports = {
     }
     try {
       const allTask = await Task.find();
-      console.log(allTask);
       return {
         response: JSON.stringify({
           type: 'task_all',
@@ -52,6 +51,50 @@ module.exports = {
           type: 'task_new',
           payload: savedTask
         }) };
+    } catch (e) {
+      return terminateResponse;
+    }
+  },
+  move: async (payload) => {
+    console.log(payload);
+    const authResponse = await authByPayload(payload);
+    console.log(authResponse);
+    if (authResponse.auth === false) {
+      return terminateResponse;
+    }
+    if (!validTaskPosition(payload.position)) {
+      return terminateResponse;
+    }
+    try {
+      console.log('before find');
+      const selectedTask = await Task.findById(payload.id);
+      console.log(selectedTask);
+      console.log('start');
+      console.log(selectedTask._id);
+      console.log(payload.id);
+      console.log(payload.id === selectedTask._id);
+      console.log('end');
+      if ((selectedTask._id.equals(payload.id)) || (selectedTask.position === 'TODO')) {
+        console.log('setting position');
+        selectedTask.position = payload.position;
+        try {
+          console.log('before save');
+          await selectedTask.save();
+          return {
+            response: JSON.stringify({
+              type: 'task_move',
+              payload: {
+                id: selectedTask._id
+              }
+            })
+          };
+        } catch (e) {
+          return terminateResponse;
+        }
+      } else {
+        console.log('terminating');
+        return terminateResponse;
+      }
     } catch (e) {
       return terminateResponse;
     }
