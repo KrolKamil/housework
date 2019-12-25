@@ -1,5 +1,4 @@
-const jwt = require('jsonwebtoken');
-const { User } = require('../../models/user.js');
+const { authByPayload } = require('../../utils');
 
 const authErrorMessage = (message) => {
   return JSON.stringify({
@@ -9,28 +8,13 @@ const authErrorMessage = (message) => {
 };
 
 const auth = async (payload) => {
-  console.log(payload);
-  if (payload.hasOwnProperty('token')) {
-    try {
-      const decoded = jwt.verify(payload.token, process.env.PRIVATE_KEY);
-      try {
-        const userExists = await User.findOne({ id: decoded.id });
-        if (userExists) {
-          return authErrorMessage('user do not exists - reset your hash');
-        } else {
-          return JSON.stringify({
-            type: 'auth_success'
-          });
-        }
-      } catch (e) {
-        return authErrorMessage('internal database error');
-      }
-    } catch (e) {
-      return authErrorMessage('invalid hash');
-    }
-  } else {
-    return authErrorMessage('hash key not found');
+  const authResponse = await authByPayload(payload);
+  if (authResponse.auth === true) {
+    return JSON.stringify({
+      type: 'auth_success'
+    });
   }
+  return authErrorMessage(authResponse.message);
 };
 
 exports.auth = auth;
