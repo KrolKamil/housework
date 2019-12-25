@@ -1,0 +1,41 @@
+App API
+
+Register / Login (are same but register also saves data to server)
+url/user/regiser
+url/user/login
+Request:
+{
+    name: 'NAME',
+    password: 'PASSWORD',
+}
+
+requirenments: 
+ name: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 50,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
+
+Response: 
+
+On error: 
+{
+    auth: false,
+    message: message || 'unknown'
+};
+
+On valid:
+
+{   
+    auth: true,
+    token: token
+}
+
+WEB SOCKET:
+
