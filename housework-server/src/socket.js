@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
 const { auth } = require('./controllers/socket/auth');
+const task = require('./controllers/socket/task');
 
 const socket = (server) => {
   const wss = new WebSocket.Server({ server });
@@ -24,6 +25,9 @@ const socket = (server) => {
             }
           });
         }
+        if (response.terminate === true) {
+          ws.terminate();
+        }
       } catch (error) {
         const errorMessage = {
           type: 'error',
@@ -42,17 +46,13 @@ const socket = (server) => {
       switch (message.type) {
         case 'auth':
           return auth(message.payload);
+        case 'task_add':
+          return task.add(message.payload);
         default:
           return JSON.stringify({ type: 'type: unknown' });
       }
     }
     return JSON.stringify({ type: 'error', payload: { message: 'object property: type or payload not found' } });
-  };
-
-  const broadcast = (message) => {
-    wss.clients.forEach((ws) => {
-
-    });
   };
 
   // const terminateInterval = setInterval(() => {
