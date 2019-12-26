@@ -47,15 +47,15 @@
         type: 'task_delete',
         payload: {
             token: token,
-            id: '5e0387c2afc17106d8723293',
+            id: '5e049eee71be5b059807875a',
         }
     });
     const editTask = JSON.stringify({
         type: 'task_edit',
         payload: {
             token: token,
-            id: '5e0387c2afc17106d8723293',
-            title: 'asdf',
+            id: '5e04a10871be5b059807875b',
+            title: '11',
             // description: 'super afsd'
         }
     });
@@ -71,9 +71,9 @@
         // socket.send(auth);
         // socket.send(createTask);
         // socket.send(allTasks);
-        socket.send(moveTask);
+        // socket.send(moveTask);
         // socket.send(deleteTask);
-        // socket.send(editTask);
+        socket.send(editTask);
         // socket.send(pingRequest);
     });
     socket.addEventListener('close', () => {
