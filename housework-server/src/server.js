@@ -7,7 +7,7 @@ const server = () => {
   db();
   const server = http.createServer(app());
   socket(server);
-  server.listen(process.env.PORT, () => { console.log(`Server staretd at port: ${process.env.PORT}`); });
+  server.listen(process.env.PORT || 3000, () => { console.log(`Server staretd at port: ${process.env.PORT}`); });
 };
 
 module.exports = server;
