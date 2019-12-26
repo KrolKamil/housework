@@ -53,12 +53,27 @@ example:
 }
 
 all types:
+'ping'
 'auth'
 'task_add'
 'task_all'
 'task_move'
 'task_delete'
 'task_edit'
+
+Ping:
+You have to 'ping' server every 30 secound in oreder to keep connection.
+Othervise server will close connection.
+
+request:
+{
+    type: 'ping'
+}
+
+response
+{
+    type: 'pong'
+}
 
 Auth:
 let you chech if your tocken is valid

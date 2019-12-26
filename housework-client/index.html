@@ -17,13 +17,7 @@
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDIzZmEwYWE2MTk3MmY3ODJhYjQ5NSIsImlhdCI6MTU3NzI2OTM1OX0.YKoCEqEroRZBSdWy4cBq-tNUtfpSGk2f3yFXnmaY2hQ';
     const messageToSend = JSON.stringify({type: 'auth', payload: {token: token}});
     const createTask = JSON.stringify({
-        type: 'task_add',
-        payload: {
-            token: token,
-             title:'Test',
-             description: 'test',
-             timestamp: new Date().getTime()
-        }});
+        type: 'task_add'});
     const allTasks = JSON.stringify({
         type: 'task_all',
         payload:{
@@ -53,8 +47,11 @@
             title: 'asdf',
             // description: 'super afsd'
         }
-    })
-    console.log(messageToSend);
+    });
+    const pingRequest = JSON.stringify({
+        type: 'ping',
+        payload: null
+    });
     const socket = new WebSocket('ws://localhost:3000');
     socket.addEventListener('open', () => {
         socket.addEventListener('message', (message) => {
@@ -66,6 +63,7 @@
         // socket.send(moveTask);
         // socket.send(deleteTask);
         // socket.send(editTask);
+        socket.send(pingRequest);
     });
     socket.addEventListener('close', () => {
         console.log('closed');

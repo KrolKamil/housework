@@ -5,17 +5,24 @@ const task = require('./controllers/socket/task');
 const socket = (server) => {
   const wss = new WebSocket.Server({ server });
 
-  // const keepAlive = () => {
-  //   this.isAlive = true;
-  //   this.pong();
-  // };
+  setInterval(() => {
+    wss.clients.forEach((ws) => {
+      if (ws.isAlive === false) {
+        return ws.terminate();
+      }
+      ws.isAlive = false;
+    });
+  }, 30000);
 
   wss.on('connection', (ws) => {
+    ws.isAlive = true;
     ws.addEventListener('message', async (message) => {
       try {
         const parsedMessage = await JSON.parse(message.data);
         const response = await handleMessage(parsedMessage);
+        console.log(response);
         if (response.response) {
+          ws.isAlive = true;
           ws.send(response.response);
         }
         if (response.broadcast) {
@@ -44,6 +51,12 @@ const socket = (server) => {
   const handleMessage = async (message) => {
     if (message.hasOwnProperty('type') && message.hasOwnProperty('payload')) {
       switch (message.type) {
+        case 'ping':
+          return {
+            response: JSON.stringify({
+              type: 'pong'
+            })
+          };
         case 'auth':
           return auth(message.payload);
         case 'task_add':
