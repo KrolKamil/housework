@@ -14,10 +14,21 @@
 <body>
     
     <script>
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDIzZmEwYWE2MTk3MmY3ODJhYjQ5NSIsImlhdCI6MTU3NzI2OTM1OX0.YKoCEqEroRZBSdWy4cBq-tNUtfpSGk2f3yFXnmaY2hQ';
-    const messageToSend = JSON.stringify({type: 'auth', payload: {token: token}});
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDQ5YzIzNzFiZTViMDU5ODA3ODc1OCIsImlhdCI6MTU3NzM2MDQyMCwiZXhwIjoxNTc3NDQ2ODIwfQ.xz79jvQfo-fYHgWa3Rd9aZn7AkYyfRNfsBBJY08DXnE';
+    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDRhMTcyNzFiZTViMDU5ODA3ODc1ZSIsImlhdCI6MTU3NzM2MTc3OCwiZXhwIjoxNTc3NDQ4MTc4fQ.jMu-MIdumDYqP_xWP8hZEOCB9iUV8oU-OIClwKI5gJ8';
+    const auth = JSON.stringify({
+        type: 'auth',
+        payload: {token: token}
+    });
     const createTask = JSON.stringify({
-        type: 'task_add'});
+        type: 'task_add',
+        payload:{
+            title: 'Super uber task',
+            description: 'Super uber descriptcion',
+            timestamp: Date.now(),
+            token: token
+        }    
+    });
     const allTasks = JSON.stringify({
         type: 'task_all',
         payload:{
@@ -28,8 +39,8 @@
         type: 'task_move',
         payload:{
             token: token,
-            id: '5e039dc1855fb024ecf3553b',
-            position: 'TODO'
+            id: '5e04a11971be5b059807875d',
+            position: 'INPROGRESS'
         }
     })
     const deleteTask = JSON.stringify({
@@ -57,17 +68,21 @@
         socket.addEventListener('message', (message) => {
             console.log(message.data);
         });
-        // socket.send(messageToSend);
+        // socket.send(auth);
         // socket.send(createTask);
         // socket.send(allTasks);
-        // socket.send(moveTask);
+        socket.send(moveTask);
         // socket.send(deleteTask);
         // socket.send(editTask);
-        socket.send(pingRequest);
+        // socket.send(pingRequest);
     });
     socket.addEventListener('close', () => {
         console.log('closed');
     })
+
+    setInterval(() => {
+        socket.send(JSON.stringify({type: 'ping'}));
+    }, 10000);
     </script>
 </body>
 </html>

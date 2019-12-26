@@ -32,20 +32,38 @@ module.exports = {
     });
   },
   login: async (req, res) => {
-    User.findOne({ name: req.body.name }, (error, user) => {
-      if (error) {
-        return res.status(500).json(userAuthErrorObject('unknown error'));
-      }
-      if (!user) {
+    if (!req.body.hasOwnProperty('name') || !req.body.hasOwnProperty('password')) {
+      return res.status(400).json(userAuthErrorObject('invalid request'));
+    }
+    try {
+      const findedUser = await User.findOne({ name: req.body.name });
+      if (!findedUser) {
         return res.status(404).json(userAuthErrorObject('user not found'));
       }
-      const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+      const isPasswordValid = bcrypt.compareSync(req.body.password, findedUser.password);
       if (!isPasswordValid) {
         return res.status(401).json(userAuthErrorObject('wrong password'));
       }
-
-      const token = jwt.sign({ id: user._id }, process.env.PRIVATE_KEY);
+      const token = jwt.sign({ id: findedUser._id }, process.env.PRIVATE_KEY);
       res.status(200).json({ auth: true, token: token });
-    });
+    } catch (e) {
+      return res.status(400).json(userAuthErrorObject('invalid request'));
+    }
+
+    // User.findOne({ name: req.body.name }, (error, user) => {
+    //   if (error) {
+    //     return res.status(500).json(userAuthErrorObject('unknown error'));
+    //   }
+    //   if (!user) {
+    //     return res.status(404).json(userAuthErrorObject('user not found'));
+    //   }
+    //   const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+    //   if (!isPasswordValid) {
+    //     return res.status(401).json(userAuthErrorObject('wrong password'));
+    //   }
+
+    //   const token = jwt.sign({ id: user._id }, process.env.PRIVATE_KEY);
+    //   res.status(200).json({ auth: true, token: token });
+    // });
   }
 };

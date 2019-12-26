@@ -49,14 +49,15 @@ const socket = (server) => {
   });
 
   const handleMessage = async (message) => {
+    if (message.type === 'ping') {
+      return {
+        response: JSON.stringify({
+          type: 'pong'
+        })
+      };
+    }
     if (message.hasOwnProperty('type') && message.hasOwnProperty('payload')) {
       switch (message.type) {
-        case 'ping':
-          return {
-            response: JSON.stringify({
-              type: 'pong'
-            })
-          };
         case 'auth':
           return auth(message.payload);
         case 'task_add':
@@ -70,10 +71,21 @@ const socket = (server) => {
         case 'task_edit':
           return task.edit(message.payload);
         default:
-          return JSON.stringify({ type: 'type: unknown' });
+          return {
+            response: JSON.stringify({
+              type: 'type: unknown'
+            })
+          };
       }
     }
-    return JSON.stringify({ type: 'error', payload: { message: 'object property: type or payload not found' } });
+    return {
+      response: JSON.stringify({
+        type: 'error',
+        payload: {
+          message: 'object property: type or payload not found'
+        }
+      })
+    };
   };
 
   // const terminateInterval = setInterval(() => {

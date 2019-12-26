@@ -67,7 +67,7 @@ module.exports = {
     }
     try {
       const selectedTask = await Task.findById(payload.id);
-      if ((selectedTask._id.equals(payload.id)) || (selectedTask.position === 'TODO')) {
+      if ((selectedTask.position === 'TODO') || (selectedTask.user._id.equals(authResponse.message))) {
         selectedTask.position = payload.position;
         if (payload.position !== 'TODO') {
           selectedTask.user = authResponse.message;
@@ -99,6 +99,7 @@ module.exports = {
           return terminateResponse;
         }
       } else {
+        console.log('hi');
         return terminateResponse;
       }
     } catch (e) {
