@@ -12,9 +12,9 @@ export const login = (login, password) => {
     dispatch({ type: USER_REQUEST_LOGIN });
     try {
       const response = await api.login(login, password);
-      dispatch({ type: USER_REQUEST_LOGIN_SUCCESS, token: response });
+      dispatch({ type: USER_REQUEST_LOGIN_SUCCESS, token: response.data.token });
     } catch (exceptation) {
-      dispatch({ type: USER_REQUEST_LOGIN_ERROR, error: exceptation });
+      dispatch({ type: USER_REQUEST_LOGIN_ERROR, error: exceptation.response.data.message });
     }
   };
 };

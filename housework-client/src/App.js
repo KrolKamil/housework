@@ -1,14 +1,23 @@
 import React from 'react';
+import Login from './login/login';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login } from './store/user/actions';
 
-const App = ({ login }) => {
+const App = () => {
   return (
-    <div onClick={() => { login('bebok1', '123456'); }}>Hello World</div>
+    <div style={{ backgroundColor: '#E1E2E1' }}>
+      <Router>
+        <Switch>
+          <Route path='/'>
+            <Login />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
   );
 };
 
 export default connect(
   null,
-  { login }
+  null
 )(App);
