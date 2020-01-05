@@ -1,9 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { login } from './store/user/actions';
 
-function App () {
+const App = ({ login }) => {
   return (
-    <div>Hello World</div>
+    <div onClick={() => { login('bebok1', '123456'); }}>Hello World</div>
   );
-}
+};
 
-export default App;
+export default connect(
+  null,
+  { login }
+)(App);
