@@ -1,5 +1,7 @@
 App API
 
+(To get your user id from (auth)hash u have to decode it using JWT)
+
 Register / Login (are same but register also saves data to server)
 url/user/regiser
 url/user/login

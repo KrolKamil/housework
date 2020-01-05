@@ -14,7 +14,7 @@
 <body>
     
     <script>
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDQ5YzIzNzFiZTViMDU5ODA3ODc1OCIsImlhdCI6MTU3NzM2MDQyMCwiZXhwIjoxNTc3NDQ2ODIwfQ.xz79jvQfo-fYHgWa3Rd9aZn7AkYyfRNfsBBJY08DXnE';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDRhMTcyNzFiZTViMDU5ODA3ODc1ZSIsImlhdCI6MTU3NzM2NjU3NX0.ZHKRLXFmEpCApwbuI1tj3G6U2jdfGrJ-JTzxbkXyhpA';
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDRhMTcyNzFiZTViMDU5ODA3ODc1ZSIsImlhdCI6MTU3NzM2MTc3OCwiZXhwIjoxNTc3NDQ4MTc4fQ.jMu-MIdumDYqP_xWP8hZEOCB9iUV8oU-OIClwKI5gJ8';
     const auth = JSON.stringify({
         type: 'auth',
@@ -63,7 +63,7 @@
         type: 'ping',
         payload: null
     });
-    const socket = new WebSocket('ws://localhost:3000');
+    const socket = new WebSocket('ws://housework-api.herokuapp.com/');
     socket.addEventListener('open', () => {
         socket.addEventListener('message', (message) => {
             console.log(message.data);
