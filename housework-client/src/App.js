@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 const App = () => {
   return (
-    <div style={{ backgroundColor: '#E1E2E1' }}>
+    <div style={{ backgroundColor: '#d3d3d3', height: '100vh' }}>
       <Router>
         <Switch>
           <Route path='/'>
