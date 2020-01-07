@@ -17,7 +17,13 @@ const App = () => {
   );
 };
 
+const mapStoreStateToProps = ({ user }) => {
+  return {
+    ...user
+  };
+};
+
 export default connect(
-  null,
+  mapStoreStateToProps,
   null
 )(App);

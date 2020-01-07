@@ -9,9 +9,10 @@ import {
 
 const initState = {
   token: null,
-  error: null,
+  loginError: null,
   isLogging: false,
-  isRegistering: false
+  isRegistering: false,
+  registeringError: null
 };
 
 const reducer = (state = initState, action) => {
@@ -34,7 +35,7 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isLogging: false,
-        error: action.error
+        loginError: action.error
       };
     }
     default: {

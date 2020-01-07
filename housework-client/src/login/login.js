@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -15,7 +15,29 @@ const Wrapper = styled.div`
   padding: 25px;
 `;
 
-const Login = ({ login }) => {
+// token: null,
+//   error: null,
+//   isLogging: false,
+//   isRegistering: false
+
+const Login = (props) => {
+  const { login, token, loginError } = props;
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+
+  const tryToLogin = () => {
+    // login('bebok1', '123456');
+    login(userName, password);
+  };
+
+  useEffect(() => {
+    token != null ? console.log('logged') : console.log('unlogged');
+  }, [token]);
+
+  const displayError = () => {
+    return (loginError !== null);
+  };
+
   return (
     <Grid
       container
@@ -28,15 +50,21 @@ const Login = ({ login }) => {
       <CssBaseline />
       <Wrapper>
         <h1 style={{ margin: '0px' }}>Sign in</h1>
-        <TextField label='Login' />
-        <TextField label='Password' type='password' />
-        <Button style={{ marginTop: '10px' }} onClick={() => { login('bebok1', '123456'); }} variant='contained' color='primary'>Send</Button>
+        <TextField error={displayError()} onChange={(e) => { setUserName(e.target.value); }} label='Login' />
+        <TextField error={displayError()} onChange={(e) => { setPassword(e.target.value); }} label='Password' type='password' />
+        <Button onClick={tryToLogin} style={{ marginTop: '10px' }} variant='contained' color='primary'>Send</Button>
       </Wrapper>
     </Grid>
   );
 };
 
+const mapStoreStateToProps = ({ user }) => {
+  return {
+    ...user
+  };
+};
+
 export default connect(
-  null,
+  mapStoreStateToProps,
   { login }
 )(Login);
