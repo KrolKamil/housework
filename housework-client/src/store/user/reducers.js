@@ -1,3 +1,5 @@
+import { getTokenFromStorage } from '../../utils/utils';
+
 import {
   USER_REQUEST_LOGIN,
   USER_REQUEST_LOGIN_SUCCESS,
@@ -8,7 +10,7 @@ import {
 } from './actions';
 
 const initState = {
-  token: null,
+  token: getTokenFromStorage(),
   loginError: null,
   isLogging: false,
   isRegistering: false,
@@ -36,6 +38,26 @@ const reducer = (state = initState, action) => {
         ...state,
         isLogging: false,
         loginError: action.error
+      };
+    }
+    case USER_REQUEST_REGISTER: {
+      return {
+        ...state,
+        isRegistering: true
+      };
+    }
+    case USER_REQUEST_REGISTER_SUCCESS: {
+      return {
+        ...state,
+        isRegistering: false,
+        token: action.token
+      };
+    }
+    case USER_REQUEST_REGISTER_ERROR: {
+      return {
+        ...state,
+        isRegistering: false,
+        registeringError: action.error
       };
     }
     default: {

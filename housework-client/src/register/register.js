@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { login } from '../store/user/actions';
+import { register } from '../store/user/actions';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -16,21 +16,21 @@ const Wrapper = styled.div`
   padding: 25px;
 `;
 
-const Login = (props) => {
-  const { login, token, loginError } = props;
+const Register = (props) => {
+  const { register, token, registeringError } = props;
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const tryToLogin = () => {
+  const tryToRegister = () => {
     // login('bebok1', '123456');
-    login(userName, password);
+    register(userName, password);
   };
 
   useEffect(() => {
-    token != null ? console.log('logged') : console.log('unlogged');
+    token != null ? console.log('registerd') : console.log('unregisterd');
   }, [token]);
 
   const displayError = () => {
-    return (loginError !== null);
+    return (registeringError !== null);
   };
 
   const linkStyles = {
@@ -51,11 +51,11 @@ const Login = (props) => {
     >
       <CssBaseline />
       <Wrapper style={{ position: 'relative' }}>
-        <h1 style={{ margin: '0px' }}>Sign in</h1>
+        <h1 style={{ margin: '0px' }}>Sign up</h1>
         <TextField error={displayError()} onChange={(e) => { setUserName(e.target.value); }} label='Login' />
         <TextField error={displayError()} onChange={(e) => { setPassword(e.target.value); }} label='Password' type='password' />
-        <Button onClick={tryToLogin} style={{ marginTop: '10px' }} variant='contained' color='primary'>Send</Button>
-        <Link style={linkStyles} href='/register' color='textPrimary'>Register</Link>
+        <Button onClick={tryToRegister} style={{ marginTop: '10px' }} variant='contained' color='primary'>Send</Button>
+        <Link style={linkStyles} href='/login' color='textPrimary'>Login</Link>
       </Wrapper>
     </Grid>
   );
@@ -69,5 +69,5 @@ const mapStoreStateToProps = ({ user }) => {
 
 export default connect(
   mapStoreStateToProps,
-  { login }
-)(Login);
+  { register }
+)(Register);
