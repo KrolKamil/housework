@@ -63,7 +63,7 @@
         type: 'ping',
         payload: null
     });
-    const socket = new WebSocket('ws://housework-api.herokuapp.com/');
+    const socket = new WebSocket('ws://localhost:3000');
     socket.addEventListener('open', () => {
         socket.addEventListener('message', (message) => {
             console.log(message.data);
