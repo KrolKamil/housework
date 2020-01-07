@@ -51,7 +51,7 @@ const Login = (props) => {
     >
       <CssBaseline />
       <Wrapper style={{ position: 'relative' }}>
-        <h1 style={{ margin: '0px' }}>Sign in</h1>
+        <h1 style={{ margin: '0px' }}>Login</h1>
         <TextField error={displayError()} onChange={(e) => { setUserName(e.target.value); }} label='Login' />
         <TextField error={displayError()} onChange={(e) => { setPassword(e.target.value); }} label='Password' type='password' />
         <Button onClick={tryToLogin} style={{ marginTop: '10px' }} variant='contained' color='primary'>Send</Button>

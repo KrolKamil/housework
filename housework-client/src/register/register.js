@@ -51,7 +51,7 @@ const Register = (props) => {
     >
       <CssBaseline />
       <Wrapper style={{ position: 'relative' }}>
-        <h1 style={{ margin: '0px' }}>Sign up</h1>
+        <h1 style={{ margin: '0px' }}>Register</h1>
         <TextField error={displayError()} onChange={(e) => { setUserName(e.target.value); }} label='Login' />
         <TextField error={displayError()} onChange={(e) => { setPassword(e.target.value); }} label='Password' type='password' />
         <Button onClick={tryToRegister} style={{ marginTop: '10px' }} variant='contained' color='primary'>Send</Button>
