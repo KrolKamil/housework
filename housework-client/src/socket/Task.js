@@ -9,6 +9,7 @@ class Task extends EventEmitter {
 
   restart = () => {
       this.requestGetAllTasks();
+    //   this.requestAddTask('agata', 'EBE');
   }
 
   incomingMessage = (type, payload) => {
@@ -17,10 +18,25 @@ class Task extends EventEmitter {
             this.saveAllTasks(payload);
             break;
         }
+        case 'task_add-confirmation': {
+            this.addTaskToStore(payload);
+            break;
+        }
         default:{
             console.log('task unknown type:' + type);
         }
       }
+  }
+
+  serializeTask = (payload) => {
+      return {
+        id: payload.task._id,
+        title: payload.task.title,
+        description: payload.task.description,
+        position: payload.task.position,
+        date: payload.task.timestamp,
+        owned: true
+      };
   }
 
   serializeTasks = (payload) => {
@@ -29,7 +45,7 @@ class Task extends EventEmitter {
     }
     let serializedTasks = [];
     payload.forEach(task => {
-        const owned = false;
+        const owned = true;
         serializedTasks.push({
             id: task._id,
             title: task.title,
@@ -45,7 +61,24 @@ class Task extends EventEmitter {
   saveAllTasks = (payload) => {
     const serializedTasks = this.serializeTasks(payload);
     store.dispatch(setInitialTasks(serializedTasks));
-    store.dispatch(addTask({name: 'kamil', surname: 'krol'}));
+    // store.dispatch(addTask({name: 'kamil', surname: 'krol'}));
+  }
+
+  addTaskToStore = (payload) => {
+      const serializedTask = this.serializeTask(payload);
+      store.dispatch(addTask(serializedTask));
+  }
+
+  requestAddTask = (title, description) => {
+    this.emitMessage(JSON.stringify({
+        type: 'task_add',
+        payload: {
+            token: store.getState().user.token,
+            title: title,
+            description: description,
+            timestamp: Date.now()
+        }
+    }));
   }
 
   requestGetAllTasks = () => {
@@ -54,7 +87,7 @@ class Task extends EventEmitter {
         payload: {
             token: store.getState().user.token
         }
-    }))
+    }));
   }
 
   emitMessage = (message) => {
