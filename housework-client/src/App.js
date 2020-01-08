@@ -5,8 +5,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Main from './main/main';
 
-console.log('hi');
-
 const App = (props) => {
   const { token } = props;
   return (
@@ -14,7 +12,6 @@ const App = (props) => {
       <Router>
         <Switch>
           <Route exact path='/'>
-            {console.log('a')}
             {token !== null ? <Main /> : <Login />}
           </Route>
           <Route exact path='/login'>
@@ -24,7 +21,6 @@ const App = (props) => {
             {token !== null ? <Main /> : <Register />}
           </Route>
           <Route exact path='/test'>
-            {console.log('b')}
             <div>TEST</div>
           </Route>
         </Switch>

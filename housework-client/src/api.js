@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://housework-api.herokuapp.com/',
+  baseURL: 'http://localhost:3000',
+  // baseURL: 'http://housework-api.herokuapp.com/',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'http://localhost:3000/'
+    'Access-Control-Allow-Origin': 'http://housework-api.herokuapp.com/'
   }
 });
 

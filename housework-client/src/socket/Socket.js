@@ -12,6 +12,7 @@ class Socket extends EventEmitter {
 
   start = () => {
     this.setHandlerListeners();
+    // this.socket = new WebSocket('ws://housework-api.herokuapp.com');
     this.socket = new WebSocket('ws://localhost:3000');
     this.pingInterval = null;
     this.setSocketListeners();
@@ -35,10 +36,12 @@ class Socket extends EventEmitter {
 
   openListener = () => {
     this.connection.restart();
+    this.task.restart();
   }
 
   messageListener = async (message) => {
     const parsedMessage = await JSON.parse(message.data);
+    console.log("Pure message: " + parsedMessage.type);
     const rootType = this.getRootType(parsedMessage.type);
     switch(rootType){
       case 'pong': {

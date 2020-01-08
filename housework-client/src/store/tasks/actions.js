@@ -1,16 +1,14 @@
-import api from '../../api';
+export const TASK_ADD_ALL = 'TASK_ADD_ALL';
 
-export const TASK_REQUEST_PING = 'TASK_REQUEST_PING';
+// export const setInitialTasks = (tasks) => {
+//   console.log(tasks);
+//   return async (dispatch) => {
+//     dispatch({ type: 'TASK_ADD_ALL', tasks: tasks });
+//   };
+// };
 
-export const ping = (login, password) => {
+export const setInitialTasks = (tasks) => {
   return async (dispatch) => {
-    dispatch({ type: USER_REQUEST_LOGIN });
-    try {
-      const response = await api.login(login, password);
-      window.sessionStorage.setItem('token', response.data.token);
-      dispatch({ type: USER_REQUEST_LOGIN_SUCCESS, token: response.data.token });
-    } catch (exceptation) {
-      dispatch({ type: USER_REQUEST_LOGIN_ERROR, error: exceptation.response.data.message });
-    }
+    dispatch({ type: TASK_ADD_ALL, tasks: tasks });
   };
 };

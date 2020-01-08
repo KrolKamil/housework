@@ -21,7 +21,7 @@ class Connection extends EventEmitter {
   }
 
   incomingMessage = (type) => {
-    console.log('server ping responsed');
+    console.log('server ping responsed' + type);
   }
 }
 
