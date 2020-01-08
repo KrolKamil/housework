@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Main from './main/main';
 
+console.log('hi');
+
 const App = (props) => {
   const { token } = props;
   return (
