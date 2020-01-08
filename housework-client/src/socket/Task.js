@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import store from '../store/store';
-import {setInitialTasks} from '../store/tasks/actions';
-import {register} from '../store/user/actions';
+import {setInitialTasks, addTask} from '../store/tasks/actions';
 
 class Task extends EventEmitter {
   constructor () {
@@ -46,6 +45,7 @@ class Task extends EventEmitter {
   saveAllTasks = (payload) => {
     const serializedTasks = this.serializeTasks(payload);
     store.dispatch(setInitialTasks(serializedTasks));
+    store.dispatch(addTask({name: 'kamil', surname: 'krol'}));
   }
 
   requestGetAllTasks = () => {
