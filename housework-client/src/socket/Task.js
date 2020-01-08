@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import store from '../store/store';
-import {setInitialTasks, addTask} from '../store/tasks/actions';
+import {moveTask, setInitialTasks, addTask} from '../store/tasks/actions';
 
 class Task extends EventEmitter {
   constructor () {
@@ -10,6 +10,7 @@ class Task extends EventEmitter {
   restart = () => {
       this.requestGetAllTasks();
     //   this.requestAddTask('agata', 'EBE');
+    this.requestMoveTask('5e049eb971be5b0598078759', 'TODO');
   }
 
   incomingMessage = (type, payload) => {
@@ -20,6 +21,10 @@ class Task extends EventEmitter {
         }
         case 'task_add-confirmation': {
             this.addTaskToStore(payload);
+            break;
+        }
+        case 'task_move-confirmation': {
+            this.moveTaskInStore(payload);
             break;
         }
         default:{
@@ -69,6 +74,11 @@ class Task extends EventEmitter {
       store.dispatch(addTask(serializedTask));
   }
 
+  moveTaskInStore = (payload) => {
+    const serializedTask = this.serializeTask(payload);
+    store.dispatch(moveTask(serializedTask));
+  }
+
   requestAddTask = (title, description) => {
     this.emitMessage(JSON.stringify({
         type: 'task_add',
@@ -86,6 +96,17 @@ class Task extends EventEmitter {
         type: 'task_all',
         payload: {
             token: store.getState().user.token
+        }
+    }));
+  }
+
+  requestMoveTask = (taskId, position) => {
+    this.emitMessage(JSON.stringify({
+        type: 'task_move',
+        payload: {
+            token: store.getState().user.token,
+            id: taskId,
+            position: position
         }
     }));
   }
