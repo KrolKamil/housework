@@ -10,7 +10,7 @@ class Task extends EventEmitter {
   restart = () => {
       this.requestGetAllTasks();
     //   this.requestAddTask('agata', 'EBE');
-    this.requestMoveTask('5e049eb971be5b0598078759', 'TODO');
+    // this.requestMoveTask('5e049eb971be5b0598078759', 'TODO');
   }
 
   incomingMessage = (type, payload) => {

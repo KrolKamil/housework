@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Login from './login/login';
 import Register from './register/register';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Main from './main/main';
+import Socket from './socket/Socket';
+
+const socket = new Socket();
 
 const App = (props) => {
   const { token } = props;
+
+  useEffect(() => {
+    if (token !== null) {
+      socket.start();
+    }
+  }, [token]);
+
   return (
     <div style={{ backgroundColor: '#d3d3d3', height: '100vh' }}>
       <Router>
