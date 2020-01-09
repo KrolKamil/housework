@@ -91,7 +91,7 @@ const Main = (props) => {
   );
 
   return (
-    <Grid container>
+    <Grid container wrap='nowrap'>
       <Grid item>{toDoList()}</Grid>
       <Grid item>{inProgressList()}</Grid>
       <Grid item>{doneList()}</Grid>
