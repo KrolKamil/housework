@@ -1,4 +1,7 @@
-import { getTokenFromStorage } from '../../utils/utils';
+import {
+  getTokenFromStorage,
+  getTrokenFromStorageAndTransformToId
+} from '../../utils/utils';
 
 import {
   USER_REQUEST_LOGIN,
@@ -11,6 +14,7 @@ import {
 
 const initState = {
   token: getTokenFromStorage(),
+  id: getTrokenFromStorageAndTransformToId(),
   loginError: null,
   isLogging: false,
   isRegistering: false,
@@ -29,7 +33,8 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isLogging: false,
-        token: action.token
+        token: action.auth.token,
+        id: action.auth.id
       };
     }
     case USER_REQUEST_LOGIN_ERROR: {
@@ -49,7 +54,8 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isRegistering: false,
-        token: action.token
+        token: action.auth.token,
+        id: action.auth.id
       };
     }
     case USER_REQUEST_REGISTER_ERROR: {

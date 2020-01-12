@@ -27,6 +27,10 @@ class Task extends EventEmitter {
             this.moveTaskInStore(payload);
             break;
         }
+        case 'task_move': {
+          this.moveTaskInStore(payload);
+          break;
+        }
         default:{
             console.log('task unknown type:' + type);
         }
@@ -50,20 +54,20 @@ class Task extends EventEmitter {
     }
     let serializedTasks = [];
     payload.forEach(task => {
-        const owned = true;
         serializedTasks.push({
             id: task._id,
             title: task.title,
             description: task.description,
             position: task.position,
             date: task.timestamp,
-            owned: owned
+            owned: this.isTaskBelongsToUser(task)
         })
     });
     return serializedTasks;
   }
 
   saveAllTasks = (payload) => {
+    console.log(payload);
     const serializedTasks = this.serializeTasks(payload);
     store.dispatch(setInitialTasks(serializedTasks));
     // store.dispatch(addTask({name: 'kamil', surname: 'krol'}));
@@ -114,6 +118,18 @@ class Task extends EventEmitter {
   emitMessage = (message) => {
       console.log(message);
     this.emit('message', message);
+  }
+
+  isTaskBelongsToUser = (task) => {
+    const storeState = store.getState();
+    if(task.hasOwnProperty('user')){
+      if(task.user._id === storeState.user.id){
+         return true;
+      }
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 

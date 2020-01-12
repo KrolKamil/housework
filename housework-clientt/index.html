@@ -14,8 +14,7 @@
 <body>
     
     <script>
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDRhMTcyNzFiZTViMDU5ODA3ODc1ZSIsImlhdCI6MTU3NzM2NjU3NX0.ZHKRLXFmEpCApwbuI1tj3G6U2jdfGrJ-JTzxbkXyhpA';
-    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDRhMTcyNzFiZTViMDU5ODA3ODc1ZSIsImlhdCI6MTU3NzM2MTc3OCwiZXhwIjoxNTc3NDQ4MTc4fQ.jMu-MIdumDYqP_xWP8hZEOCB9iUV8oU-OIClwKI5gJ8';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDkyOTgxYTQ0NDFjMDAwNGQ0YTFlZiIsImlhdCI6MTU3ODg1MTIyMH0.m_jbrikhANUqJLTS3j01-9lselWCR0oEx0yHh31-XYk';
     const auth = JSON.stringify({
         type: 'auth',
         payload: {token: token}
@@ -39,8 +38,8 @@
         type: 'task_move',
         payload:{
             token: token,
-            id: '5e04a11971be5b059807875d',
-            position: 'INPROGRESS'
+            id: '5e04a10871be5b059807875b',
+            position: 'DONE'
         }
     })
     const deleteTask = JSON.stringify({
@@ -71,9 +70,9 @@
         // socket.send(auth);
         // socket.send(createTask);
         // socket.send(allTasks);
-        // socket.send(moveTask);
+        socket.send(moveTask);
         // socket.send(deleteTask);
-        socket.send(editTask);
+        // socket.send(editTask);
         // socket.send(pingRequest);
     });
     socket.addEventListener('close', () => {

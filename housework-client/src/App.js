@@ -4,9 +4,7 @@ import Register from './register/register';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Main from './main/main';
-import Socket from './socket/Socket';
-
-const socket = new Socket();
+import socket from './socket/Socket';
 
 const App = (props) => {
   const { token } = props;

@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core/styles';
+import socket from '../socket/Socket';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,6 +21,13 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto'
   }
 }));
+
+const getLiBgColorByOwned = (owned) => {
+  if (owned) {
+    return '#1edb27';
+  }
+  return '#e34343';
+};
 
 const Main = (props) => {
   const { token, tasks } = props;
@@ -30,17 +38,19 @@ const Main = (props) => {
     <Paper style={{ height: '80vh', overflow: 'auto' }}>
       <List dense component='div' role='list'>
         {tasks.map(task => {
-          const labelId = `transfer-list-item-${task.id}-label`;
-          return (
-            <ListItem key={task.id} role='listitem' button >
-              <ListItemText id={labelId} primary={task.title} />
-              <ListItemSecondaryAction>
-                <IconButton edge='end' aria-label='comments'>
-                  <ArrowForward />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          );
+          if (task.position === 'TODO') {
+            const labelId = `transfer-list-item-${task.id}-label`;
+            return (
+              <ListItem key={task.id} role='listitem' button >
+                <ListItemText id={labelId} primary={task.title} />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
+                    <ArrowForward />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            );
+          }
         })}
         <ListItem />
       </List>
@@ -51,20 +61,22 @@ const Main = (props) => {
     <Paper style={{ height: '80vh', overflow: 'auto' }}>
       <List dense component='div' role='list'>
         {tasks.map(task => {
-          const labelId = `transfer-list-item-${task.id}-label`;
-          return (
-            <ListItem key={task.id} role='listitem' button >
-              <IconButton edge='end' aria-label='comments'>
-                <ArrowBack />
-              </IconButton>
-              <ListItemText id={labelId} primary={task.title} />
-              <ListItemSecondaryAction>
-                <IconButton edge='end' aria-label='comments'>
-                  <ArrowForward />
+          if (task.position === 'INPROGRESS') {
+            const labelId = `transfer-list-item-${task.id}-label`;
+            return (
+              <ListItem style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
+                <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'TODO'); }} edge='end' aria-label='comments'>
+                  <ArrowBack />
                 </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          );
+                <ListItemText id={labelId} primary={task.title} />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'DONE'); }} edge='end' aria-label='comments'>
+                    <ArrowForward />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            );
+          }
         })}
         <ListItem />
       </List>
@@ -75,15 +87,17 @@ const Main = (props) => {
     <Paper style={{ height: '80vh', overflow: 'auto' }}>
       <List dense component='div' role='list'>
         {tasks.map(task => {
-          const labelId = `transfer-list-item-${task.id}-label`;
-          return (
-            <ListItem key={task.id} role='listitem' button >
-              <IconButton edge='end' aria-label='comments'>
-                <ArrowBack />
-              </IconButton>
-              <ListItemText id={labelId} primary={task.title} />
-            </ListItem>
-          );
+          if (task.position === 'DONE') {
+            const labelId = `transfer-list-item-${task.id}-label`;
+            return (
+              <ListItem style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
+                <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
+                  <ArrowBack />
+                </IconButton>
+                <ListItemText id={labelId} primary={task.title} />
+              </ListItem>
+            );
+          }
         })}
         <ListItem />
       </List>
@@ -99,6 +113,7 @@ const Main = (props) => {
   );
 };
 
+// requestMoveTask
 const mapStoreStateToProps = ({ user, tasks }) => {
   return {
     ...user,

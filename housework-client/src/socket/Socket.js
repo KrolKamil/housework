@@ -74,4 +74,6 @@ class Socket extends EventEmitter {
     return type.substring(0, index);
   }
 }
-export default Socket;
+
+const socketObject = new Socket();
+export default socketObject;

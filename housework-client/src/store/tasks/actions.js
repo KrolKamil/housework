@@ -16,7 +16,8 @@ export const addTask = (task) => {
 
 export const moveTask = (task) => {
   return async (dispatch) => {
+    console.log('inc');
+    console.log(task);
     dispatch({ type: TASKS_MOVE, task: task });
   };
-}
-;
+};

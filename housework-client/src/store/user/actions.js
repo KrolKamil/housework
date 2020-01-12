@@ -1,4 +1,5 @@
 import api from '../../api';
+import jwt from 'jsonwebtoken';
 
 export const USER_REQUEST_LOGIN = 'USER_REQUEST_LOGIN';
 export const USER_REQUEST_LOGIN_SUCCESS = 'USER_REQUEST_LOGIN_SUCCESS';
@@ -13,7 +14,11 @@ export const login = (login, password) => {
     try {
       const response = await api.login(login, password);
       window.sessionStorage.setItem('token', response.data.token);
-      dispatch({ type: USER_REQUEST_LOGIN_SUCCESS, token: response.data.token });
+      const auth = {
+        token: response.data.token,
+        id: jwt.decode(response.data.token).id
+      };
+      dispatch({ type: USER_REQUEST_LOGIN_SUCCESS, auth: auth });
     } catch (exceptation) {
       dispatch({ type: USER_REQUEST_LOGIN_ERROR, error: exceptation.response.data.message });
     }
@@ -26,7 +31,11 @@ export const register = (login, password) => {
     try {
       const response = await api.register(login, password);
       window.sessionStorage.setItem('token', response.data.token);
-      dispatch({ type: USER_REQUEST_REGISTER_SUCCESS, token: response.data.token });
+      const auth = {
+        token: response.data.token,
+        id: jwt.decode(response.data.token).id
+      };
+      dispatch({ type: USER_REQUEST_REGISTER_SUCCESS, auth: auth });
     } catch (exceptation) {
       dispatch({ type: USER_REQUEST_REGISTER_ERROR, error: exceptation.response.data.message });
     }
