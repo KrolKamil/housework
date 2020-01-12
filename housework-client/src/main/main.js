@@ -111,7 +111,19 @@ const Main = (props) => {
   );
 
   return (
-    <Grid container wrap='nowrap'>
+    // <Grid
+    //   container
+    //   spacing={0}
+    //   direction='row'
+    //   alignItems='center'
+    //   justify='center'
+    //   style={{ minHeight: '100vh' }}
+    //   wrap='nowrap'
+    // >
+    <Grid
+      container
+      direction='row'
+      style={{ width: 'fit-content', margin: 'auto' }} wrap='nowrap'>
       <Grid item>{toDoList()}</Grid>
       <Grid item>{inProgressList()}</Grid>
       <Grid item>{doneList()}</Grid>
