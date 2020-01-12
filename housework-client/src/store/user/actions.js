@@ -7,6 +7,13 @@ export const USER_REQUEST_LOGIN_ERROR = 'USER_REQUEST_LOGIN_ERROR';
 export const USER_REQUEST_REGISTER = 'USER_REQUEST_REGISTER';
 export const USER_REQUEST_REGISTER_SUCCESS = 'USER_REQUEST_REGISTER_SUCCESS';
 export const USER_REQUEST_REGISTER_ERROR = 'USER_REQUEST_REGISTER_ERROR';
+export const USER_LOGOUT = 'USER_LOGOUT';
+
+export const logout = () => {
+  return async (dispatch) => {
+    dispatch({ type: USER_LOGOUT });
+  };
+};
 
 export const login = (login, password) => {
   return async (dispatch) => {

@@ -18,6 +18,12 @@ class Socket extends EventEmitter {
     this.setSocketListeners();
   }
 
+  stop = () => {
+    if(this.socket !== null){
+      this.socket.close();
+    }
+  }
+
   setHandlerListeners = () => {
     this.connection.on('message', this.handleMessage);
     this.task.on('message', this.handleMessage);

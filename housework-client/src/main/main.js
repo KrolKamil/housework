@@ -37,7 +37,7 @@ const Main = (props) => {
 
   const toDoList = () => (
     <Paper style={{ height: '80vh', overflow: 'auto' }}>
-      <List dense component='div' role='list'>
+      <List onClick={() => { console.log('hi'); }} dense component='div' role='list'>
         {tasks.map(task => {
           if (task.position === 'TODO') {
             const labelId = `transfer-list-item-${task.id}-label`;

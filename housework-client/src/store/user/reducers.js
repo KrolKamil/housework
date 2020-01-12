@@ -9,7 +9,8 @@ import {
   USER_REQUEST_LOGIN_ERROR,
   USER_REQUEST_REGISTER,
   USER_REQUEST_REGISTER_SUCCESS,
-  USER_REQUEST_REGISTER_ERROR
+  USER_REQUEST_REGISTER_ERROR,
+  USER_LOGOUT
 } from './actions';
 
 const initState = {
@@ -23,6 +24,13 @@ const initState = {
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
+    case USER_LOGOUT: {
+      return {
+        ...state,
+        token: null,
+        id: null
+      };
+    }
     case USER_REQUEST_LOGIN: {
       return {
         ...state,
