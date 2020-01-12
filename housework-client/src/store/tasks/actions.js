@@ -1,6 +1,7 @@
 export const TASKS_ADD_INIT = 'TASKS_ADD_INIT';
 export const TASKS_ADD = 'TASKS_ADD';
 export const TASKS_MOVE = 'TASKS_MOVE';
+export const TASKS_DELETE = 'TASKS_DELETE';
 
 export const setInitialTasks = (tasks) => {
   return async (dispatch) => {
@@ -16,8 +17,14 @@ export const addTask = (task) => {
 
 export const moveTask = (task) => {
   return async (dispatch) => {
-    console.log('inc');
-    console.log(task);
     dispatch({ type: TASKS_MOVE, task: task });
+  };
+};
+
+export const deleteTask = (task) => {
+  console.log('delete');
+  console.log(task);
+  return async (dispatch) => {
+    dispatch({ type: TASKS_DELETE, task: task });
   };
 };

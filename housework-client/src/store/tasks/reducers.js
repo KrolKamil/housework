@@ -1,7 +1,8 @@
 import {
   TASKS_ADD_INIT,
   TASKS_ADD,
-  TASKS_MOVE
+  TASKS_MOVE,
+  TASKS_DELETE
 } from './actions';
 
 const initState = [];
@@ -29,8 +30,14 @@ const reducer = (state = initState, action) => {
         }
         return task;
       });
-      // console.log(action.task);
-      // return state;
+    }
+    case TASKS_DELETE: {
+      return state.filter((task) => {
+        if (task.id === action.task.id) {
+          return false;
+        }
+        return true;
+      });
     }
     default: {
       return state;

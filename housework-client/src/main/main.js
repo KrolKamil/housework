@@ -9,6 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core/styles';
@@ -95,6 +96,11 @@ const Main = (props) => {
                   <ArrowBack />
                 </IconButton>
                 <ListItemText id={labelId} primary={task.title} />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={() => { socket.task.requestDeleteTask(task.id); }} edge='end' aria-label='comments'>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
               </ListItem>
             );
           }

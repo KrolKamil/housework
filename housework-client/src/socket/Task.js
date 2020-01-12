@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import store from '../store/store';
-import {moveTask, setInitialTasks, addTask} from '../store/tasks/actions';
+import {moveTask, setInitialTasks, addTask, deleteTask} from '../store/tasks/actions';
 
 class Task extends EventEmitter {
   constructor () {
@@ -29,6 +29,14 @@ class Task extends EventEmitter {
         }
         case 'task_move': {
           this.moveTaskInStore(payload);
+          break;
+        }
+        case 'task_delete-confirmation': {
+          this.deleteTaskInStore(payload);
+          break;
+        }
+        case 'task_delete': {
+          this.deleteTaskInStore(payload);
           break;
         }
         default:{
@@ -83,6 +91,11 @@ class Task extends EventEmitter {
     store.dispatch(moveTask(serializedTask));
   }
 
+  deleteTaskInStore = (payload) => {
+    const serializedTask = this.serializeTask(payload);
+    store.dispatch(deleteTask(serializedTask));
+  }
+
   requestAddTask = (title, description) => {
     this.emitMessage(JSON.stringify({
         type: 'task_add',
@@ -112,6 +125,16 @@ class Task extends EventEmitter {
             id: taskId,
             position: position
         }
+    }));
+  }
+
+  requestDeleteTask = (taskId) => {
+    this.emitMessage(JSON.stringify({
+      type: 'task_delete',
+      payload: {
+        token: store.getState().user.token,
+        id: taskId
+      }
     }));
   }
 
