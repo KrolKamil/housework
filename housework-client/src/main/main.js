@@ -14,14 +14,11 @@ import ArrowForward from '@material-ui/icons/ArrowForward';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core/styles';
 import socket from '../socket/Socket';
+import ListSubheader from '@material-ui/core/ListSubheader';
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    width: 200,
-    height: 230,
-    overflow: 'auto'
-  }
-}));
+const listHeaderStles = {
+  backgroundColor: '#8488f7'
+};
 
 const getLiBgColorByOwned = (owned) => {
   if (owned) {
@@ -37,7 +34,15 @@ const Main = (props) => {
 
   const toDoList = () => (
     <Paper style={{ height: '80vh', overflow: 'auto' }}>
-      <List onClick={() => { console.log('hi'); }} dense component='div' role='list'>
+      <List
+        subheader={
+          <ListSubheader component='div' id='nested-list-subheader'>
+            Do zrobienia
+          </ListSubheader>
+        }
+        dense
+        component='div'
+        role='list'>
         {tasks.map(task => {
           if (task.position === 'TODO') {
             const labelId = `transfer-list-item-${task.id}-label`;
@@ -60,7 +65,15 @@ const Main = (props) => {
 
   const inProgressList = () => (
     <Paper style={{ height: '80vh', overflow: 'auto' }}>
-      <List dense component='div' role='list'>
+      <List
+        subheader={
+          <ListSubheader component='div' id='nested-list-subheader'>
+            W trakcie
+          </ListSubheader>
+        }
+        dense
+        component='div'
+        role='list'>
         {tasks.map(task => {
           if (task.position === 'INPROGRESS') {
             const labelId = `transfer-list-item-${task.id}-label`;
@@ -86,7 +99,15 @@ const Main = (props) => {
 
   const doneList = () => (
     <Paper style={{ height: '80vh', overflow: 'auto' }}>
-      <List dense component='div' role='list'>
+      <List
+        subheader={
+          <ListSubheader component='div' id='nested-list-subheader'>
+            Zrobione
+          </ListSubheader>
+        }
+        dense
+        component='div'
+        role='list'>
         {tasks.map(task => {
           if (task.position === 'DONE') {
             const labelId = `transfer-list-item-${task.id}-label`;

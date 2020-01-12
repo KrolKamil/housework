@@ -16,7 +16,7 @@ const App = (props) => {
   }, [token]);
 
   return (
-    <div style={{ backgroundColor: '#d3d3d3' }}>
+    <div style={{ backgroundColor: '#252643', height: '100vh', overflow: 'auto', display: 'flex' }}>
       <Router>
         <Switch>
           <Route exact path='/'>
