@@ -11,6 +11,7 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 
 export const logout = () => {
   return async (dispatch) => {
+    window.sessionStorage.removeItem('token');
     dispatch({ type: USER_LOGOUT });
   };
 };

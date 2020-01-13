@@ -134,15 +134,6 @@ const Main = (props) => {
   );
 
   return (
-    // <Grid
-    //   container
-    //   spacing={0}
-    //   direction='row'
-    //   alignItems='center'
-    //   justify='center'
-    //   style={{ minHeight: '100vh' }}
-    //   wrap='nowrap'
-    // >
     <Grid
       container
       direction='row'

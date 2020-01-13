@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { setNewTaskOpen } from '../store/app/actions';
+import { logout } from '../store/user/actions';
+import socket from '../socket/Socket';
 
 const Container = styled.div`
     position: absolute;
@@ -11,13 +13,17 @@ const Container = styled.div`
 `;
 
 const BottomMenu = (props) => {
-  const { setNewTaskOpen } = props;
+  const { setNewTaskOpen, logout } = props;
+
+  const logoutAction = () => {
+    socket.stop();
+    logout();
+  };
 
   return (
     <Container>
       <Button onClick={() => { setNewTaskOpen(true); }} variant='contained' color='primary'>Dodaj Zadanie</Button>
-      <Button variant='contained' color='primary'>Informacje</Button>
-      <Button variant='contained' color='primary'>Wyloguj</Button>
+      <Button onClick={() => { logoutAction(); }} variant='contained' color='primary'>Wyloguj</Button>
     </Container>
   );
 };
@@ -30,5 +36,6 @@ const mapStoreStateToProps = ({ user }) => {
 
 export default connect(
   mapStoreStateToProps,
-  { setNewTaskOpen }
+  { setNewTaskOpen,
+    logout }
 )(BottomMenu);

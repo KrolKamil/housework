@@ -6,24 +6,24 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { setNewTaskOpen } from '../store/app/actions';
+import { setEditTaskOpen } from '../store/app/actions';
 import socket from '../socket/Socket';
 
-const NewTask = (props) => {
-  const { app, setNewTaskOpen } = props;
-  const [open, setOpen] = useState(app.newTaskOpen);
+const EditTask = (props) => {
+  const { app, setEditTaskOpen } = props;
+  const [open, setOpen] = useState(app.editTaskOpen);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    setOpen(app.newTaskOpen);
-  }, [app.newTaskOpen]);
+    setOpen(app.editTaskOpen);
+  }, [app.editTaskOpen]);
 
   const handleClose = () => {
-    setNewTaskOpen(false);
+    setEditTaskOpen(false);
   };
 
-  const handleAddTask = () => {
+  const handleEditTask = () => {
     socket.task.requestAddTask(title, description);
     setTitle('');
     setDescription('');
@@ -33,7 +33,7 @@ const NewTask = (props) => {
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
-        <DialogTitle id='form-dialog-title'>Dodaj nowe zadanie</DialogTitle>
+        <DialogTitle id='form-dialog-title'>Edytuj zadanie</DialogTitle>
         <DialogContent>
           <TextField
             onChange={(e) => { setTitle(e.target.value); }}
@@ -60,8 +60,8 @@ const NewTask = (props) => {
           <Button onClick={handleClose} color='primary'>
             Wróć
           </Button>
-          <Button onClick={handleAddTask} color='primary'>
-            Potwierdź
+          <Button onClick={handleEditTask} color='primary'>
+            Zapisz
           </Button>
         </DialogActions>
       </Dialog>
@@ -78,4 +78,4 @@ const mapStoreStateToProps = ({ app }) => {
 export default connect(
   mapStoreStateToProps,
   { setNewTaskOpen }
-)(NewTask);
+)(EditTask);
