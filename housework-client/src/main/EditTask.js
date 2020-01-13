@@ -6,21 +6,21 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { setEditTaskOpen } from '../store/app/actions';
+import { setEditVisibility } from '../store/tasks/actions';
 import socket from '../socket/Socket';
 
 const EditTask = (props) => {
-  const { app, setEditTaskOpen } = props;
-  const [open, setOpen] = useState(app.editTaskOpen);
+  const { tasks, setEditVisibility } = props;
+  const [open, setOpen] = useState(tasks.editVisible);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    setOpen(app.editTaskOpen);
-  }, [app.editTaskOpen]);
+    setOpen(tasks.editVisible);
+  }, [tasks.editVisible]);
 
   const handleClose = () => {
-    setEditTaskOpen(false);
+    setEditVisibility(false);
   };
 
   const handleEditTask = () => {
@@ -69,13 +69,13 @@ const EditTask = (props) => {
   );
 };
 
-const mapStoreStateToProps = ({ app }) => {
+const mapStoreStateToProps = ({ tasks }) => {
   return {
-    app
+    tasks
   };
 };
 
 export default connect(
   mapStoreStateToProps,
-  { setNewTaskOpen }
+  { setEditVisibility }
 )(EditTask);

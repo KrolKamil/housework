@@ -13,7 +13,9 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import socket from '../socket/Socket';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import NewTask from './NewTask';
+import EditTask from './EditTask';
 import BottomMenu from './BottomMenu';
+import { setEditVisibility, setEditId } from '../store/tasks/actions';
 
 const listHeaderStles = {
   backgroundColor: '#b6b7e2'
@@ -26,8 +28,13 @@ const getLiBgColorByOwned = (owned) => {
   return '#e34343';
 };
 
+const showEditTaskByID = (id) => {
+  setEditId(id);
+  setEditVisibility(true);
+};
+
 const Main = (props) => {
-  const { tasks } = props;
+  const { tasks, setEditVisibility, setEditId } = props;
 
   const toDoList = () => (
     <Paper style={{ marginRight: '15px', height: '80vh', overflow: 'auto' }}>
@@ -44,7 +51,7 @@ const Main = (props) => {
           if (task.position === 'TODO') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
-              <ListItem onClick={() => { console.log('CLICKED'); }} key={task.id} role='listitem' button >
+              <ListItem onClick={showEditTaskByID(task.id)} key={task.id} role='listitem' button >
                 <ListItemText id={labelId} primary={task.title} />
                 <ListItemSecondaryAction>
                   <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
@@ -75,7 +82,7 @@ const Main = (props) => {
           if (task.position === 'INPROGRESS') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
-              <ListItem style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
+              <ListItem onClick={showEditTaskByID(task.id)} style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
                 <IconButton disabled={!task.owned} onClick={() => { socket.task.requestMoveTask(task.id, 'TODO'); }} edge='end' aria-label='comments'>
                   <ArrowBack />
                 </IconButton>
@@ -109,7 +116,7 @@ const Main = (props) => {
           if (task.position === 'DONE') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
-              <ListItem style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
+              <ListItem onClick={showEditTaskByID(task.id)} style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
                 <IconButton disabled={!task.owned} onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
                   <ArrowBack />
                 </IconButton>
@@ -138,18 +145,19 @@ const Main = (props) => {
       <Grid item>{doneList()}</Grid>
       <BottomMenu />
       <NewTask />
+      <EditTask />
     </Grid>
   );
 };
 
 const mapStoreStateToProps = ({ user, tasks }) => {
   return {
-    user: { ...user },
-    tasks: { ...tasks }
+    user: user,
+    tasks: tasks
   };
 };
 
 export default connect(
   mapStoreStateToProps,
-  null
+  { setEditVisibility, setEditId }
 )(Main);
