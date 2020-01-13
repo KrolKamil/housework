@@ -79,12 +79,12 @@ const Main = (props) => {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
               <ListItem style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
-                <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'TODO'); }} edge='end' aria-label='comments'>
+                <IconButton disabled={!task.owned} onClick={() => { socket.task.requestMoveTask(task.id, 'TODO'); }} edge='end' aria-label='comments'>
                   <ArrowBack />
                 </IconButton>
                 <ListItemText id={labelId} primary={task.title} />
                 <ListItemSecondaryAction>
-                  <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'DONE'); }} edge='end' aria-label='comments'>
+                  <IconButton disabled={!task.owned} onClick={() => { socket.task.requestMoveTask(task.id, 'DONE'); }} edge='end' aria-label='comments'>
                     <ArrowForward />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -113,12 +113,12 @@ const Main = (props) => {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
               <ListItem style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
-                <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
+                <IconButton disabled={!task.owned} onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
                   <ArrowBack />
                 </IconButton>
                 <ListItemText id={labelId} primary={task.title} />
                 <ListItemSecondaryAction>
-                  <IconButton onClick={() => { socket.task.requestDeleteTask(task.id); }} edge='end' aria-label='comments'>
+                  <IconButton disabled={!task.owned} onClick={() => { socket.task.requestDeleteTask(task.id); }} edge='end' aria-label='comments'>
                     <DeleteIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
