@@ -3,10 +3,6 @@ import store from '../store/store';
 import {moveTask, setInitialTasks, addTask, deleteTask} from '../store/tasks/actions';
 
 class Task extends EventEmitter {
-  constructor () {
-    super();
-  }
-
   restart = () => {
       this.requestGetAllTasks();
     //   this.requestAddTask('agata', 'EBE');

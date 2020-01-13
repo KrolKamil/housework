@@ -5,39 +5,49 @@ import {
   TASKS_DELETE
 } from './actions';
 
-const initState = [];
+const initState = {
+  tasks: []
+};
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
     case TASKS_ADD_INIT: {
-      return [
-        ...action.tasks
-      ];
+      return {
+        tasks: [
+          ...action.tasks
+        ]
+      };
     }
     case TASKS_ADD: {
-      return [
-        ...state,
-        { ...action.task }
-      ];
+      return {
+        tasks: [
+          ...state.tasks,
+          { ...action.task }
+        ]
+      };
     }
     case TASKS_MOVE: {
-      return state.map((task) => {
-        if (task.id === action.task.id) {
-          return {
-            ...task,
-            position: action.task.position
-          };
-        }
-        return task;
-      });
+      return {
+        tasks: state.tasks.map((task) => {
+          if (task.id === action.task.id) {
+            return {
+              ...task,
+              position: action.task.position
+            };
+          }
+          return task;
+        })
+      };
     }
     case TASKS_DELETE: {
-      return state.filter((task) => {
-        if (task.id === action.task.id) {
-          return false;
-        }
-        return true;
-      });
+      return {
+        tasks: state.tasks.filter((task) => {
+          if (task.id === action.task.id) {
+            return false;
+          }
+          return true;
+        })
+      };
     }
     default: {
       return state;

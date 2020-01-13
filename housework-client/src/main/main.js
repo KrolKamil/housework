@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { makeStyles } from '@material-ui/core/styles';
 import socket from '../socket/Socket';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import NewTask from './NewTask';
@@ -30,9 +27,7 @@ const getLiBgColorByOwned = (owned) => {
 };
 
 const Main = (props) => {
-  const { token, tasks } = props;
-  console.log('tasks');
-  console.log(tasks);
+  const { tasks } = props;
 
   const toDoList = () => (
     <Paper style={{ marginRight: '15px', height: '80vh', overflow: 'auto' }}>
@@ -45,7 +40,7 @@ const Main = (props) => {
         dense
         component='div'
         role='list'>
-        {tasks.map(task => {
+        {tasks.tasks.map(task => {
           if (task.position === 'TODO') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
@@ -76,7 +71,7 @@ const Main = (props) => {
         dense
         component='div'
         role='list'>
-        {tasks.map(task => {
+        {tasks.tasks.map(task => {
           if (task.position === 'INPROGRESS') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
@@ -110,7 +105,7 @@ const Main = (props) => {
         dense
         component='div'
         role='list'>
-        {tasks.map(task => {
+        {tasks.tasks.map(task => {
           if (task.position === 'DONE') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
@@ -147,11 +142,10 @@ const Main = (props) => {
   );
 };
 
-// requestMoveTask
 const mapStoreStateToProps = ({ user, tasks }) => {
   return {
-    ...user,
-    tasks: [...tasks]
+    user: { ...user },
+    tasks: { ...tasks }
   };
 };
 
