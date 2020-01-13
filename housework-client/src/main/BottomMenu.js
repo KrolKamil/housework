@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import { setNewTaskOpen } from '../store/app/actions';
+import { setNewVisibility } from '../store/tasks/actions';
 import { logout } from '../store/user/actions';
 import socket from '../socket/Socket';
 
@@ -13,7 +13,7 @@ const Container = styled.div`
 `;
 
 const BottomMenu = (props) => {
-  const { setNewTaskOpen, logout } = props;
+  const { setNewVisibility, logout } = props;
 
   const logoutAction = () => {
     socket.stop();
@@ -22,7 +22,7 @@ const BottomMenu = (props) => {
 
   return (
     <Container>
-      <Button onClick={() => { setNewTaskOpen(true); }} variant='contained' color='primary'>Dodaj Zadanie</Button>
+      <Button onClick={() => { setNewVisibility(true); }} variant='contained' color='primary'>Dodaj Zadanie</Button>
       <Button onClick={() => { logoutAction(); }} variant='contained' color='primary'>Wyloguj</Button>
     </Container>
   );
@@ -36,6 +36,6 @@ const mapStoreStateToProps = ({ user }) => {
 
 export default connect(
   mapStoreStateToProps,
-  { setNewTaskOpen,
+  { setNewVisibility,
     logout }
 )(BottomMenu);
