@@ -15,9 +15,11 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core/styles';
 import socket from '../socket/Socket';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import NewTask from './NewTask';
+import BottomMenu from './BottomMenu';
 
 const listHeaderStles = {
-  backgroundColor: '#8488f7'
+  backgroundColor: '#b6b7e2'
 };
 
 const getLiBgColorByOwned = (owned) => {
@@ -33,10 +35,10 @@ const Main = (props) => {
   console.log(tasks);
 
   const toDoList = () => (
-    <Paper style={{ height: '80vh', overflow: 'auto' }}>
+    <Paper style={{ marginRight: '15px', height: '80vh', overflow: 'auto' }}>
       <List
         subheader={
-          <ListSubheader component='div' id='nested-list-subheader'>
+          <ListSubheader style={listHeaderStles} component='div' id='nested-list-subheader'>
             Do zrobienia
           </ListSubheader>
         }
@@ -47,7 +49,7 @@ const Main = (props) => {
           if (task.position === 'TODO') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
-              <ListItem key={task.id} role='listitem' button >
+              <ListItem onClick={() => { console.log('CLICKED'); }} key={task.id} role='listitem' button >
                 <ListItemText id={labelId} primary={task.title} />
                 <ListItemSecondaryAction>
                   <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
@@ -64,10 +66,10 @@ const Main = (props) => {
   );
 
   const inProgressList = () => (
-    <Paper style={{ height: '80vh', overflow: 'auto' }}>
+    <Paper style={{ marginRight: '15px', height: '80vh', overflow: 'auto' }}>
       <List
         subheader={
-          <ListSubheader component='div' id='nested-list-subheader'>
+          <ListSubheader style={listHeaderStles} component='div' id='nested-list-subheader'>
             W trakcie
           </ListSubheader>
         }
@@ -101,7 +103,7 @@ const Main = (props) => {
     <Paper style={{ height: '80vh', overflow: 'auto' }}>
       <List
         subheader={
-          <ListSubheader component='div' id='nested-list-subheader'>
+          <ListSubheader style={listHeaderStles} component='div' id='nested-list-subheader'>
             Zrobione
           </ListSubheader>
         }
@@ -148,6 +150,8 @@ const Main = (props) => {
       <Grid item>{toDoList()}</Grid>
       <Grid item>{inProgressList()}</Grid>
       <Grid item>{doneList()}</Grid>
+      <BottomMenu />
+      <NewTask />
     </Grid>
   );
 };
