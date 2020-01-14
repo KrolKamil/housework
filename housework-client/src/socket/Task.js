@@ -19,6 +19,10 @@ class Task extends EventEmitter {
             this.addTaskToStore(payload);
             break;
         }
+        case 'task_add': {
+          this.addTaskToStore(payload);
+          break;
+        }
         case 'task_move-confirmation': {
             this.moveTaskInStore(payload);
             break;
@@ -48,7 +52,7 @@ class Task extends EventEmitter {
         description: payload.task.description,
         position: payload.task.position,
         date: payload.task.timestamp,
-        owned: true
+        owned: this.isTaskBelongsToUser(payload.task)
       };
   }
 
@@ -84,6 +88,8 @@ class Task extends EventEmitter {
 
   moveTaskInStore = (payload) => {
     const serializedTask = this.serializeTask(payload);
+    console.log('Task to move: ');
+    console.log(serializedTask);
     store.dispatch(moveTask(serializedTask));
   }
 

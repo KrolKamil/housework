@@ -61,7 +61,8 @@ const reducer = (state = initState, action) => {
           if (task.id === action.task.id) {
             return {
               ...task,
-              position: action.task.position
+              position: action.task.position,
+              owned: action.task.owned
             };
           }
           return task;

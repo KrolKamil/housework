@@ -38,6 +38,15 @@ const EditTask = (props) => {
     handleClose();
   };
 
+  const inputDisabled = () => {
+    if (tasks.toEdit !== null) {
+      if (tasks.toEdit.owned) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
@@ -53,6 +62,7 @@ const EditTask = (props) => {
             fullWidth
             required
             value={title}
+            disabled={inputDisabled()}
           />
           <TextField
             onChange={(e) => { setDescription(e.target.value); }}
@@ -62,6 +72,7 @@ const EditTask = (props) => {
             type='text'
             fullWidth
             value={description}
+            disabled={inputDisabled()}
           />
         </DialogContent>
         <DialogActions>
