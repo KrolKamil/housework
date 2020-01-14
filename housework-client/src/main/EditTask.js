@@ -63,6 +63,7 @@ const EditTask = (props) => {
             required
             value={title}
             disabled={inputDisabled()}
+            multiline
           />
           <TextField
             onChange={(e) => { setDescription(e.target.value); }}
@@ -73,6 +74,7 @@ const EditTask = (props) => {
             fullWidth
             value={description}
             disabled={inputDisabled()}
+            multiline
           />
         </DialogContent>
         <DialogActions>
