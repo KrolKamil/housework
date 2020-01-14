@@ -5,6 +5,13 @@ export const TASKS_DELETE = 'TASKS_DELETE';
 export const TASKS_SET_EDIT_VISIBILITY = 'TASKS_SET_EDIT_VISIBILITY';
 export const TASKS_SET_NEW_VISIBILITY = 'TASKS_SET_NEW_VISIBILITY';
 export const TASKS_SET_TO_EDIT = 'TASKS_SET_TO_EDIT';
+export const TASKS_EDIT = 'TASKS_EDIT';
+
+export const editTask = (task) => {
+  return async (dispatch) => {
+    dispatch({ type: TASKS_EDIT, task: task });
+  };
+};
 
 export const setEditVisibility = (value) => {
   return async (dispatch) => {
@@ -43,8 +50,6 @@ export const moveTask = (task) => {
 };
 
 export const deleteTask = (task) => {
-  console.log('delete');
-  console.log(task);
   return async (dispatch) => {
     dispatch({ type: TASKS_DELETE, task: task });
   };

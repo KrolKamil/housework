@@ -32,13 +32,18 @@ const EditTask = (props) => {
   };
 
   const handleEditTask = () => {
-    socket.task.requestAddTask(title, description);
+    const taskToEdit = {
+      id: tasks.toEdit.id,
+      title: title,
+      description: description
+    };
+    socket.task.requestEditTask(taskToEdit);
     setTitle('');
     setDescription('');
     handleClose();
   };
 
-  const inputDisabled = () => {
+  const elementDisabled = () => {
     if (tasks.toEdit !== null) {
       if (tasks.toEdit.owned) {
         return false;
@@ -62,7 +67,7 @@ const EditTask = (props) => {
             fullWidth
             required
             value={title}
-            disabled={inputDisabled()}
+            disabled={elementDisabled()}
             multiline
           />
           <TextField
@@ -73,7 +78,7 @@ const EditTask = (props) => {
             type='text'
             fullWidth
             value={description}
-            disabled={inputDisabled()}
+            disabled={elementDisabled()}
             multiline
           />
         </DialogContent>
@@ -81,7 +86,7 @@ const EditTask = (props) => {
           <Button onClick={handleClose} color='primary'>
             Wróć
           </Button>
-          <Button onClick={handleEditTask} color='primary'>
+          <Button disabled={elementDisabled()} onClick={handleEditTask} color='primary'>
             Zapisz
           </Button>
         </DialogActions>

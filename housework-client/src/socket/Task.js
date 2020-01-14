@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import store from '../store/store';
-import {moveTask, setInitialTasks, addTask, deleteTask} from '../store/tasks/actions';
+import {editTask, moveTask, setInitialTasks, addTask, deleteTask} from '../store/tasks/actions';
 
 class Task extends EventEmitter {
   restart = () => {
@@ -11,6 +11,14 @@ class Task extends EventEmitter {
 
   incomingMessage = (type, payload) => {
       switch(type){
+        case 'task_edit': {
+          this.editTaskInStore(payload);
+          break;
+        }
+        case 'task_edit-confirmation': {
+          this.editTaskInStore(payload);
+          break;
+        }
         case 'task_all': {
             this.saveAllTasks(payload);
             break;
@@ -86,6 +94,14 @@ class Task extends EventEmitter {
       store.dispatch(addTask(serializedTask));
   }
 
+  editTaskInStore = (payload) => {
+    console.log('wow test');
+    console.log(payload);
+    const serializedTask = this.serializeTask(payload);
+    store.dispatch(editTask(serializedTask));
+
+  }
+
   moveTaskInStore = (payload) => {
     const serializedTask = this.serializeTask(payload);
     console.log('Task to move: ');
@@ -96,6 +112,18 @@ class Task extends EventEmitter {
   deleteTaskInStore = (payload) => {
     const serializedTask = this.serializeTask(payload);
     store.dispatch(deleteTask(serializedTask));
+  }
+
+  requestEditTask = (task) => {
+    this.emitMessage(JSON.stringify({
+        type: 'task_edit',
+        payload: {
+            token: store.getState().user.token,
+            id: task.id,
+            title: task.title,
+            description: task.description
+        }
+    }));
   }
 
   requestAddTask = (title, description) => {

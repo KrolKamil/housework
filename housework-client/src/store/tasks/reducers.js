@@ -5,7 +5,8 @@ import {
   TASKS_DELETE,
   TASKS_SET_EDIT_VISIBILITY,
   TASKS_SET_NEW_VISIBILITY,
-  TASKS_SET_TO_EDIT
+  TASKS_SET_TO_EDIT,
+  TASKS_EDIT
 } from './actions';
 
 const initState = {
@@ -17,6 +18,22 @@ const initState = {
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
+    case TASKS_EDIT: {
+      return {
+        ...state,
+        tasks: state.tasks.map((task) => {
+          if (task.id === action.task.id) {
+            return {
+              ...task,
+              title: action.task.title,
+              description: action.task.description,
+              owned: action.task.owned
+            };
+          }
+          return task;
+        })
+      };
+    }
     case TASKS_SET_TO_EDIT: {
       return {
         ...state,
