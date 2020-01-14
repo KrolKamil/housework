@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { setEditVisibility } from '../store/tasks/actions';
 import socket from '../socket/Socket';
+// import { getTaskToEditFromStore } from '../utils/utils';
 
 const EditTask = (props) => {
   const { tasks, setEditVisibility } = props;
@@ -18,6 +19,13 @@ const EditTask = (props) => {
   useEffect(() => {
     setOpen(tasks.editVisible);
   }, [tasks.editVisible]);
+
+  useEffect(() => {
+    if (tasks.toEdit !== null) {
+      setTitle(tasks.toEdit.title);
+      setDescription(tasks.toEdit.description);
+    }
+  }, [tasks.toEdit]);
 
   const handleClose = () => {
     setEditVisibility(false);

@@ -5,22 +5,24 @@ import {
   TASKS_DELETE,
   TASKS_SET_EDIT_VISIBILITY,
   TASKS_SET_NEW_VISIBILITY,
-  TASKS_SET_EDIT_ID
+  TASKS_SET_TO_EDIT
 } from './actions';
 
 const initState = {
   tasks: [],
   editVisible: false,
   newVisible: false,
-  editId: null
+  toEdit: null
 };
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
-    case TASKS_SET_EDIT_ID: {
+    case TASKS_SET_TO_EDIT: {
       return {
         ...state,
-        editId: action.id
+        toEdit: state.tasks.find((task) => {
+          return task.id === action.id;
+        })
       };
     }
     case TASKS_SET_NEW_VISIBILITY: {

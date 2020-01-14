@@ -15,7 +15,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import NewTask from './NewTask';
 import EditTask from './EditTask';
 import BottomMenu from './BottomMenu';
-import { setEditVisibility, setEditId } from '../store/tasks/actions';
+import { setEditVisibility, setToEdit } from '../store/tasks/actions';
 
 const listHeaderStles = {
   backgroundColor: '#b6b7e2'
@@ -28,13 +28,13 @@ const getLiBgColorByOwned = (owned) => {
   return '#e34343';
 };
 
-const showEditTaskByID = (id) => {
-  setEditId(id);
-  setEditVisibility(true);
-};
-
 const Main = (props) => {
-  const { tasks, setEditVisibility, setEditId } = props;
+  const { user, tasks, setEditVisibility, setToEdit } = props;
+
+  const showEditTaskByID = (id) => {
+    setToEdit(id);
+    setEditVisibility(true);
+  };
 
   const toDoList = () => (
     <Paper style={{ marginRight: '15px', height: '80vh', overflow: 'auto' }}>
@@ -51,7 +51,7 @@ const Main = (props) => {
           if (task.position === 'TODO') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
-              <ListItem onClick={showEditTaskByID(task.id)} key={task.id} role='listitem' button >
+              <ListItem onClick={() => { showEditTaskByID(task.id); }} key={task.id} role='listitem' button >
                 <ListItemText id={labelId} primary={task.title} />
                 <ListItemSecondaryAction>
                   <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
@@ -82,8 +82,8 @@ const Main = (props) => {
           if (task.position === 'INPROGRESS') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
-              <ListItem onClick={showEditTaskByID(task.id)} style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
-                <IconButton disabled={!task.owned} onClick={() => { socket.task.requestMoveTask(task.id, 'TODO'); }} edge='end' aria-label='comments'>
+              <ListItem onClick={(e) => { showEditTaskByID(task.id); }} style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
+                <IconButton disabled={!task.owned} onClick={(e) => { e.stopPropagation(); socket.task.requestMoveTask(task.id, 'TODO'); }} edge='end' aria-label='comments'>
                   <ArrowBack />
                 </IconButton>
                 <ListItemText id={labelId} primary={task.title} />
@@ -116,8 +116,8 @@ const Main = (props) => {
           if (task.position === 'DONE') {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
-              <ListItem onClick={showEditTaskByID(task.id)} style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
-                <IconButton disabled={!task.owned} onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
+              <ListItem onClick={() => { showEditTaskByID(task.id); }} style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
+                <IconButton disabled={!task.owned} onClick={(e) => { e.stopPropagation(); socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
                   <ArrowBack />
                 </IconButton>
                 <ListItemText id={labelId} primary={task.title} />
@@ -135,19 +135,22 @@ const Main = (props) => {
     </Paper>
   );
 
-  return (
-    <Grid
-      container
-      direction='row'
-      style={{ width: 'fit-content', margin: 'auto' }} wrap='nowrap'>
-      <Grid item>{toDoList()}</Grid>
-      <Grid item>{inProgressList()}</Grid>
-      <Grid item>{doneList()}</Grid>
-      <BottomMenu />
-      <NewTask />
-      <EditTask />
-    </Grid>
-  );
+  if (user.token !== null) {
+    return (
+      <Grid
+        container
+        direction='row'
+        style={{ width: 'fit-content', margin: 'auto' }} wrap='nowrap'>
+        <Grid item>{toDoList()}</Grid>
+        <Grid item>{inProgressList()}</Grid>
+        <Grid item>{doneList()}</Grid>
+        <BottomMenu />
+        <NewTask />
+        <EditTask />
+      </Grid>
+    );
+  }
+  return (<div />);
 };
 
 const mapStoreStateToProps = ({ user, tasks }) => {
@@ -159,5 +162,5 @@ const mapStoreStateToProps = ({ user, tasks }) => {
 
 export default connect(
   mapStoreStateToProps,
-  { setEditVisibility, setEditId }
+  { setEditVisibility, setToEdit }
 )(Main);

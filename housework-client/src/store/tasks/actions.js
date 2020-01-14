@@ -4,7 +4,7 @@ export const TASKS_MOVE = 'TASKS_MOVE';
 export const TASKS_DELETE = 'TASKS_DELETE';
 export const TASKS_SET_EDIT_VISIBILITY = 'TASKS_SET_EDIT_VISIBILITY';
 export const TASKS_SET_NEW_VISIBILITY = 'TASKS_SET_NEW_VISIBILITY';
-export const TASKS_SET_EDIT_ID = 'TASKS_SET_EDIT_ID';
+export const TASKS_SET_TO_EDIT = 'TASKS_SET_TO_EDIT';
 
 export const setEditVisibility = (value) => {
   return async (dispatch) => {
@@ -18,9 +18,9 @@ export const setNewVisibility = (value) => {
   };
 };
 
-export const setEditId = (id) => {
+export const setToEdit = (id) => {
   return async (dispatch) => {
-    dispatch({ type: TASKS_SET_EDIT_ID, id: id });
+    dispatch({ type: TASKS_SET_TO_EDIT, id: id });
   };
 };
 

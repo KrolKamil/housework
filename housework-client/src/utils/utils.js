@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import store from '../store/store';
 
 export const getTokenFromStorage = () => {
   try {
@@ -19,4 +20,17 @@ export const getTrokenFromStorageAndTransformToId = () => {
   } catch (e) {
     return null;
   }
+};
+
+export const getTaskToEditFromStore = () => {
+  const storeState = store.getState();
+  if (storeState.tasks.editId !== null) {
+    const foundedTask = storeState.tasks.tasks.find((task) => {
+      return task.id === storeState.tasks.editId;
+    });
+    if (foundedTask !== undefined) {
+      return foundedTask;
+    }
+  }
+  return null;
 };
