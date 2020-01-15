@@ -7,9 +7,12 @@ import { logout } from '../store/user/actions';
 import socket from '../socket/Socket';
 
 const Container = styled.div`
-    position: absolute;
-    bottom: 0px;
-    left: 50%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const BottomMenu = (props) => {
@@ -22,8 +25,8 @@ const BottomMenu = (props) => {
 
   return (
     <Container>
-      <Button onClick={() => { setNewVisibility(true); }} variant='contained' color='primary'>Dodaj Zadanie</Button>
-      <Button onClick={() => { logoutAction(); }} variant='contained' color='primary'>Wyloguj</Button>
+      <Button style={{ flex: '1', backgroundColor: 'rgb(37, 44, 67)' }} onClick={() => { logoutAction(); }} variant='contained' color='primary'>Wyloguj</Button>
+      <Button style={{ flex: '1', backgroundColor: 'rgb(24, 60, 175)' }} onClick={() => { setNewVisibility(true); }} variant='contained' color='primary'>Dodaj Zadanie</Button>
     </Container>
   );
 };

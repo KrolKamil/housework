@@ -18,14 +18,31 @@ import BottomMenu from './BottomMenu';
 import { setEditVisibility, setToEdit } from '../store/tasks/actions';
 
 const listHeaderStles = {
-  backgroundColor: '#b6b7e2'
+  backgroundColor: 'rgb(24, 60, 175)',
+  color: 'white'
 };
 
 const getLiBgColorByOwned = (owned) => {
   if (owned) {
-    return '#1edb27';
+    return 'rgb(63, 81, 181)';
   }
-  return '#e34343';
+  return 'rgb(37, 44, 67)';
+};
+
+const textStyles = {
+  color: 'white'
+};
+
+const svgStyles = {
+  fill: 'white'
+};
+
+const paperStyles = {
+  backgroundColor: 'rgb(63, 81, 181)',
+  marginRight: '15px',
+  marginLeft: '15px',
+  maxHeight: '80vh',
+  overflow: 'auto'
 };
 
 const Main = (props) => {
@@ -37,11 +54,11 @@ const Main = (props) => {
   };
 
   const toDoList = () => (
-    <Paper style={{ marginRight: '15px', height: '80vh', overflow: 'auto' }}>
+    <Paper style={paperStyles}>
       <List
         subheader={
           <ListSubheader style={listHeaderStles} component='div' id='nested-list-subheader'>
-            Do zrobienia
+            DO ZROBIENIA
           </ListSubheader>
         }
         dense
@@ -52,10 +69,10 @@ const Main = (props) => {
             const labelId = `transfer-list-item-${task.id}-label`;
             return (
               <ListItem onClick={() => { showEditTaskByID(task.id); }} key={task.id} role='listitem' button >
-                <ListItemText id={labelId} primary={task.title} />
+                <ListItemText style={textStyles} id={labelId} primary={task.title} />
                 <ListItemSecondaryAction>
                   <IconButton onClick={() => { socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
-                    <ArrowForward />
+                    <ArrowForward style={svgStyles} />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
@@ -68,11 +85,11 @@ const Main = (props) => {
   );
 
   const inProgressList = () => (
-    <Paper style={{ marginRight: '15px', height: '80vh', overflow: 'auto' }}>
+    <Paper style={paperStyles}>
       <List
         subheader={
           <ListSubheader style={listHeaderStles} component='div' id='nested-list-subheader'>
-            W trakcie
+            W TRAKCIE
           </ListSubheader>
         }
         dense
@@ -84,12 +101,12 @@ const Main = (props) => {
             return (
               <ListItem onClick={(e) => { showEditTaskByID(task.id); }} style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
                 <IconButton disabled={!task.owned} onClick={(e) => { e.stopPropagation(); socket.task.requestMoveTask(task.id, 'TODO'); }} edge='end' aria-label='comments'>
-                  <ArrowBack />
+                  <ArrowBack style={svgStyles} />
                 </IconButton>
-                <ListItemText id={labelId} primary={task.title} />
+                <ListItemText style={textStyles} id={labelId} primary={task.title} />
                 <ListItemSecondaryAction>
                   <IconButton disabled={!task.owned} onClick={() => { socket.task.requestMoveTask(task.id, 'DONE'); }} edge='end' aria-label='comments'>
-                    <ArrowForward />
+                    <ArrowForward style={svgStyles} />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
@@ -102,11 +119,11 @@ const Main = (props) => {
   );
 
   const doneList = () => (
-    <Paper style={{ height: '80vh', overflow: 'auto' }}>
+    <Paper style={paperStyles}>
       <List
         subheader={
           <ListSubheader style={listHeaderStles} component='div' id='nested-list-subheader'>
-            Zrobione
+            ZROBIONE
           </ListSubheader>
         }
         dense
@@ -118,12 +135,12 @@ const Main = (props) => {
             return (
               <ListItem onClick={() => { showEditTaskByID(task.id); }} style={{ backgroundColor: getLiBgColorByOwned(task.owned) }} key={task.id} role='listitem' button >
                 <IconButton disabled={!task.owned} onClick={(e) => { e.stopPropagation(); socket.task.requestMoveTask(task.id, 'INPROGRESS'); }} edge='end' aria-label='comments'>
-                  <ArrowBack />
+                  <ArrowBack style={svgStyles} />
                 </IconButton>
-                <ListItemText id={labelId} primary={task.title} />
+                <ListItemText style={textStyles} id={labelId} primary={task.title} />
                 <ListItemSecondaryAction>
                   <IconButton disabled={!task.owned} onClick={() => { socket.task.requestDeleteTask(task.id); }} edge='end' aria-label='comments'>
-                    <DeleteIcon />
+                    <DeleteIcon style={svgStyles} />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
@@ -140,10 +157,12 @@ const Main = (props) => {
       <Grid
         container
         direction='row'
-        style={{ width: 'fit-content', margin: 'auto' }} wrap='nowrap'>
-        <Grid item>{toDoList()}</Grid>
-        <Grid item>{inProgressList()}</Grid>
-        <Grid item>{doneList()}</Grid>
+        wrap='nowrap'
+        style={{ width: 'wrap-content', margin: 'auto', overflow: 'auto' }}
+      >
+        <Grid item xl={4} md={4} xs={12} >{toDoList()}</Grid>
+        <Grid item xl={4} md={4} xs={12}>{inProgressList()}</Grid>
+        <Grid item xl={4} md={4} xs={12}>{doneList()}</Grid>
         <BottomMenu />
         <NewTask />
         <EditTask />
